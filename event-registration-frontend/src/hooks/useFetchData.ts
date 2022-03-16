@@ -14,24 +14,24 @@ interface Props {
   body?: AxiosRequestConfig<any>;
 }
 
-const useFetchData = ({ method, path, body }: Props) => {
-  const [data, setData] = useState<any>();
+const useFetchData = <T>({ method, path, body }: Props) => {
+  const [data, setData] = useState<T | undefined>();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<unknown | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let response = {};
+        let response;
         method === Methods.get &&
-          ({ data: response } = await axios.get(`${API_BASE_URL}${path}`));
+          ({ data: response } = await axios.get<T>(`${API_BASE_URL}${path}`));
         method === Methods.post &&
-          ({ data: response } = await axios.post(
+          ({ data: response } = await axios.post<T>(
             `${API_BASE_URL}${path}`,
             body
           ));
         method === Methods.delete &&
-          ({ data: response } = await axios.delete(
+          ({ data: response } = await axios.delete<T>(
             `${API_BASE_URL}${path}`,
             body
           ));

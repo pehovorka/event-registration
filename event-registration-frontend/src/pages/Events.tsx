@@ -3,16 +3,16 @@ import { PageLayout } from "../components";
 import { EventsList } from "../components/events";
 import { API_ROUTES } from "../config/api";
 import useFetchData, { Methods } from "../hooks/useFetchData";
+import { Event } from "../interfaces/Event";
 
 function Events() {
-  const { data, loading, error } = useFetchData({
+  const { data, loading, error } = useFetchData<Event[]>({
     method: Methods.get,
     path: API_ROUTES.events,
   });
   return (
-    <PageLayout>
+    <PageLayout title="Events">
       <>
-        <h1>Events</h1>
         {loading && <p>Loading...</p>}
         {data && <EventsList events={data} />}
         {error && <Alert type="error" message={`${error}`} />}

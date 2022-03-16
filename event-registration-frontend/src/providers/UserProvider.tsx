@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { useContext, createContext, useReducer, useState } from "react";
 import { API_BASE_URL, API_ROUTES } from "../config/api";
 import { User } from "../interfaces/User";
@@ -24,9 +24,11 @@ function UserProvider({ children }: UserProviderProps) {
 const userReducer = (state: State, action: Action): State => {
   switch (action.type) {
     case "register": {
+      localStorage.setItem("userUid", action.data.uid);
       return action.data;
     }
     case "logout": {
+      localStorage.removeItem("userUid");
       return undefined;
     }
     default: {
@@ -45,14 +47,14 @@ const useUser = () => {
 
 const useUserRegistration = () => {
   const userContext = useUser();
-  const [data, setData] = useState<any>();
+  const [data, setData] = useState<User>();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<unknown | null>(null);
 
   const register = async () => {
     setLoading(true);
     try {
-      const { data: response } = await axios.post(
+      const { data: response } = await axios.post<User>(
         `${API_BASE_URL}${API_ROUTES.users}`
       );
       setData(response);
