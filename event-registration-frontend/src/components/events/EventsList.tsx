@@ -1,14 +1,6 @@
 import { Table, Space } from "antd";
 import { ColumnsType } from "antd/lib/table";
-
-interface Event {
-  id: number;
-  name: string;
-  date: Date;
-  duration: number;
-  capacity: number;
-  registered: number;
-}
+import { Event } from "../../interfaces/Event";
 
 interface Props {
   events: Event[];
@@ -28,7 +20,7 @@ function EventsList({ events }: Props) {
       render: (date) =>
         new Date(date).toLocaleString("en-GB", {
           dateStyle: "long",
-          timeStyle: "medium",
+          timeStyle: "short",
         }),
     },
     {
