@@ -22,17 +22,12 @@ function AppBar() {
         <Col>
           <span style={{ padding: "0 1rem", fontSize: "1.25rem" }}>
             <Link to={"/"} style={{ color: "#000" }}>
-              Event registration app
+              Event registration
             </Link>
           </span>
         </Col>
-        <Col>
-          <Menu
-            theme="light"
-            mode="horizontal"
-            selectedKeys={[pathname]}
-            style={{ flex: "auto" }}
-          >
+        <Col flex="auto">
+          <Menu theme="light" mode="horizontal" selectedKeys={[pathname]}>
             {items.map((item) => {
               return (
                 <Menu.Item key={item.link}>
@@ -40,6 +35,9 @@ function AppBar() {
                 </Menu.Item>
               );
             })}
+            <Menu.Item style={{ marginLeft: "auto" }}>
+              Register random user
+            </Menu.Item>
           </Menu>
         </Col>
       </Row>
