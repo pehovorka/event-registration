@@ -10,6 +10,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/events")
@@ -22,8 +23,8 @@ public class EventController {
 
     @JsonView(Views.Public.class)
     @GetMapping()
-    public List<Event> getAllEvents() {
-        List<Event> events = es.getAllEvents();
+    public Set<Event> getAllEvents() {
+        Set<Event> events = es.getAllEvents();
         return events;
     }
 

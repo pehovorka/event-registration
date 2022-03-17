@@ -1,5 +1,6 @@
 package com.cscu9yw.eventregistrationbackend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
@@ -8,6 +9,7 @@ import java.time.LocalDateTime;
 @Entity
 public class EventRegistration {
     @EmbeddedId
+    @JsonIgnore
     private EventRegistrationKey id = new EventRegistrationKey();
 
     @ManyToOne

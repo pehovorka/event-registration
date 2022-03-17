@@ -26,10 +26,14 @@ public class EventRegistrationController {
     }
 
     @PostMapping()
-    public ResponseEntity<EventRegistration> register(@RequestBody EventRegistration registrationRequest) {
+    public ResponseEntity<EventRegistration> register(@RequestBody EventRegistration registrationRequest,
+                                                      @RequestHeader("X-User-Uid") String userUidHeader) {
         Long eventId = registrationRequest.getEvent().getId();
         String userUid = registrationRequest.getUser().getUid();
 
+        if (!userUid.equals(userUidHeader)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
         if (!ers.eventExists(eventId)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Event with id: " + eventId + " does not exist!");
         }
@@ -50,10 +54,14 @@ public class EventRegistrationController {
     }
 
     @DeleteMapping()
-    public void deleteRegistration(@RequestBody EventRegistration registrationRequest) {
+    public void deleteRegistration(@RequestBody EventRegistration registrationRequest,
+                                   @RequestHeader("X-User-Uid") String userUidHeader) {
         Long eventId = registrationRequest.getEvent().getId();
         String userUid = registrationRequest.getUser().getUid();
 
+        if (!userUid.equals(userUidHeader)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
         if (!ers.registrationExists(userUid, eventId)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Registration doesn't exist!");
         }

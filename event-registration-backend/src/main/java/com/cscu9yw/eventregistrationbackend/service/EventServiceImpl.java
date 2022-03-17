@@ -4,10 +4,7 @@ import com.cscu9yw.eventregistrationbackend.model.Event;
 import com.cscu9yw.eventregistrationbackend.repository.EventRepository;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 
 @Component
@@ -19,9 +16,8 @@ public class EventServiceImpl implements EventService {
         this.db = db;
     }
 
-    public List<Event> getAllEvents() {
-        List<Event> events = new ArrayList<Event>((Collection<? extends Event>) db.findAll());
-        return events;
+    public Set<Event> getAllEvents() {
+        return (Set<Event>) db.findAll();
     }
 
     public Optional<Event> getEventById(Long id) {

@@ -1,5 +1,7 @@
 package com.cscu9yw.eventregistrationbackend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -14,6 +16,7 @@ public class User {
     private Set<Interest> interests;
 
     @OneToMany(mappedBy = "user")
+    @JsonIgnoreProperties("user")
     private Set<EventRegistration> registrations = new HashSet<>();
 
     public User(String uid, String name, Set<Interest> interests) {
