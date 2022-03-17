@@ -23,8 +23,8 @@ public class EventController {
 
     @JsonView(Views.Public.class)
     @GetMapping()
-    public Set<Event> getAllEvents() {
-        Set<Event> events = es.getAllEvents();
+    public List<Event> getAllEvents() {
+        List<Event> events = es.getAllEvents();
         return events;
     }
 

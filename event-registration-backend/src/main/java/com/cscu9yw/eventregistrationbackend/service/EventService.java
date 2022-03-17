@@ -8,7 +8,7 @@ import java.util.Set;
 
 public interface EventService {
 
-    Set<Event> getAllEvents();
+    List<Event> getAllEvents();
     Optional<Event> getEventById(Long id);
     boolean eventExists(Long id);
 }

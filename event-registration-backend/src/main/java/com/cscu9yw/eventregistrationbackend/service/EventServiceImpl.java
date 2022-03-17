@@ -16,14 +16,14 @@ public class EventServiceImpl implements EventService {
         this.db = db;
     }
 
-    public Set<Event> getAllEvents() {
-        return (Set<Event>) db.findAll();
+    public List<Event> getAllEvents() {
+        return (List<Event>) db.findAll();
     }
 
     public Optional<Event> getEventById(Long id) {
         return db.findById(id);
     }
-    
+
     public boolean eventExists(Long id) {
         return db.existsById(id);
     }
