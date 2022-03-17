@@ -102,15 +102,19 @@ const useUserLogin = () => {
     setLoading(false);
   };
 
+  return { login, data, loading, error };
+};
+
+export const useInitialLogin = () => {
+  const { login, loading } = useUserLogin();
+  const { state } = useUser();
+
   useEffect(() => {
     const uid = localStorage.getItem("userUid");
-    if (uid && !userContext.state) {
+    if (uid && !state && !loading) {
       login(uid);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  return { login, data, loading, error };
+  }, [login, state, loading]);
 };
 
 export { UserProvider, useUser, useUserRegistration, useUserLogin };

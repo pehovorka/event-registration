@@ -1,5 +1,6 @@
 import { PageHeader, Tag } from "antd";
 import { User } from "../../interfaces/User";
+import { EventsList } from "../events";
 
 type Props = { user: User };
 
@@ -11,9 +12,7 @@ function UserInfo({ user }: Props) {
         ? user.interests.map((interest) => <Tag>{interest.name}</Tag>)
         : "No interests."}
       <h3 style={{ marginTop: "1rem" }}>Registrations</h3>
-      {user.registrations?.length
-        ? user.registrations.map((registration) => registration.event.name)
-        : "No registrations."}
+      <EventsList registrations={user.registrations} />
     </PageHeader>
   );
 }

@@ -36,7 +36,7 @@ function UserPopover() {
     <Popover
       content={
         <>
-          <Menu>
+          <Menu selectable={false}>
             {!user ? (
               <>
                 <Popover
@@ -53,6 +53,7 @@ function UserPopover() {
                           type="primary"
                           onClick={() => login(uidInput)}
                           loading={loginLoading}
+                          disabled={!uidInput.length}
                         >
                           Login
                         </Button>
@@ -102,13 +103,12 @@ function UserPopover() {
           )}
         </>
       }
-      title="User actions"
       trigger="click"
       visible={mainVisible}
       onVisibleChange={handleMainVisibleChange}
       placement="bottomRight"
     >
-      <Menu.Item style={{ marginLeft: "auto" }}>
+      <Menu.Item style={{ marginLeft: "auto" }} key={route.profile()}>
         {user ? user.name : "Anonymous"}
       </Menu.Item>
     </Popover>
