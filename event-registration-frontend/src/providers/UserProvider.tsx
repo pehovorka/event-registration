@@ -1,11 +1,17 @@
-import axios, { AxiosResponse } from "axios";
-import { useContext, createContext, useReducer, useState } from "react";
+import axios from "axios";
+import {
+  useContext,
+  createContext,
+  useReducer,
+  useState,
+  useEffect,
+} from "react";
 import { API_BASE_URL, API_ROUTES } from "../config/api";
 import { User } from "../interfaces/User";
 
 type Action =
   | { type: "register"; data: User }
-  | { type: "login" }
+  | { type: "login"; data: User }
   | { type: "logout" };
 type Dispatch = (action: Action) => void;
 type State = User | undefined;
@@ -24,7 +30,9 @@ function UserProvider({ children }: UserProviderProps) {
 const userReducer = (state: State, action: Action): State => {
   switch (action.type) {
     case "register": {
-      localStorage.setItem("userUid", action.data.uid);
+      return action.data;
+    }
+    case "login": {
       return action.data;
     }
     case "logout": {
@@ -32,7 +40,7 @@ const userReducer = (state: State, action: Action): State => {
       return undefined;
     }
     default: {
-      throw new Error(`Unhandled action type: ${action.type}`);
+      throw new Error(`Unhandled action type.`);
     }
   }
 };
@@ -58,13 +66,51 @@ const useUserRegistration = () => {
         `${API_BASE_URL}${API_ROUTES.users}`
       );
       setData(response);
+      setError(undefined);
       userContext.dispatch({ type: "register", data: response });
+      localStorage.setItem("userUid", response.uid);
     } catch (error) {
       setError(error);
+      localStorage.removeItem("userUid");
     }
     setLoading(false);
   };
   return { register, data, loading, error };
 };
 
-export { UserProvider, useUser, useUserRegistration };
+const useUserLogin = () => {
+  const userContext = useUser();
+  const [data, setData] = useState<User>();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<unknown | null>(null);
+
+  const login = async (userUid: string) => {
+    setLoading(true);
+    try {
+      const { data: response } = await axios.get<User>(
+        `${API_BASE_URL}${API_ROUTES.users}/${userUid}`,
+        { headers: { "X-User-Uid": userUid } }
+      );
+      setData(response);
+      setError(undefined);
+      userContext.dispatch({ type: "login", data: response });
+      localStorage.setItem("userUid", response.uid);
+    } catch (error) {
+      setError(error);
+      localStorage.removeItem("userUid");
+    }
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    const uid = localStorage.getItem("userUid");
+    if (uid && !userContext.state) {
+      login(uid);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  return { login, data, loading, error };
+};
+
+export { UserProvider, useUser, useUserRegistration, useUserLogin };

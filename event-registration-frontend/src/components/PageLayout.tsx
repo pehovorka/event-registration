@@ -1,5 +1,5 @@
 import { Layout } from "antd";
-import { AppBar } from ".";
+import { AppBar } from "./appbar";
 const { Header, Content } = Layout;
 
 type Props = {
