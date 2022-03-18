@@ -1,10 +1,7 @@
 import { useState } from "react";
 import { Alert, Button, Input, Menu, Popover } from "antd";
-import {
-  useUser,
-  useUserLogin,
-  useUserRegistration,
-} from "../../providers/UserProvider";
+import { useUser } from "../../providers/UserProvider";
+import { useUserLogin, useUserRegistration } from "../../hooks";
 import { Link } from "react-router-dom";
 import { route } from "../../Routes";
 

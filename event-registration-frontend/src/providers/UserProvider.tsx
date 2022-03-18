@@ -1,18 +1,12 @@
-import axios from "axios";
-import {
-  useContext,
-  createContext,
-  useReducer,
-  useState,
-  useEffect,
-} from "react";
-import { API_BASE_URL, API_ROUTES } from "../config/api";
-import { User } from "../interfaces/User";
+import { useContext, createContext, useReducer } from "react";
+import { Event, Registration, User } from "../interfaces";
 
 type Action =
   | { type: "register"; data: User }
   | { type: "login"; data: User }
-  | { type: "logout" };
+  | { type: "logout" }
+  | { type: "addEventRegistration"; data: Registration }
+  | { type: "deleteEventRegistration"; eventId: Event["id"] };
 type Dispatch = (action: Action) => void;
 type State = User | undefined;
 type UserProviderProps = { children: React.ReactNode };
@@ -39,6 +33,16 @@ const userReducer = (state: State, action: Action): State => {
       localStorage.removeItem("userUid");
       return undefined;
     }
+    case "addEventRegistration": {
+      state?.registrations?.push(action.data);
+      return state;
+    }
+    case "deleteEventRegistration": {
+      const registrations = state?.registrations?.filter(
+        (registration) => registration.event.id !== action.eventId
+      );
+      return { ...state!, registrations: registrations };
+    }
     default: {
       throw new Error(`Unhandled action type.`);
     }
@@ -53,68 +57,4 @@ const useUser = () => {
   return context;
 };
 
-const useUserRegistration = () => {
-  const userContext = useUser();
-  const [data, setData] = useState<User>();
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<unknown | null>(null);
-
-  const register = async () => {
-    setLoading(true);
-    try {
-      const { data: response } = await axios.post<User>(
-        `${API_BASE_URL}${API_ROUTES.users}`
-      );
-      setData(response);
-      setError(undefined);
-      userContext.dispatch({ type: "register", data: response });
-      localStorage.setItem("userUid", response.uid);
-    } catch (error) {
-      setError(error);
-      localStorage.removeItem("userUid");
-    }
-    setLoading(false);
-  };
-  return { register, data, loading, error };
-};
-
-const useUserLogin = () => {
-  const userContext = useUser();
-  const [data, setData] = useState<User>();
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<unknown | null>(null);
-
-  const login = async (userUid: string) => {
-    setLoading(true);
-    try {
-      const { data: response } = await axios.get<User>(
-        `${API_BASE_URL}${API_ROUTES.users}/${userUid}`,
-        { headers: { "X-User-Uid": userUid } }
-      );
-      setData(response);
-      setError(undefined);
-      userContext.dispatch({ type: "login", data: response });
-      localStorage.setItem("userUid", response.uid);
-    } catch (error) {
-      setError(error);
-      localStorage.removeItem("userUid");
-    }
-    setLoading(false);
-  };
-
-  return { login, data, loading, error };
-};
-
-export const useInitialLogin = () => {
-  const { login, loading } = useUserLogin();
-  const { state } = useUser();
-
-  useEffect(() => {
-    const uid = localStorage.getItem("userUid");
-    if (uid && !state && !loading) {
-      login(uid);
-    }
-  }, [login, state, loading]);
-};
-
-export { UserProvider, useUser, useUserRegistration, useUserLogin };
+export { UserProvider, useUser };

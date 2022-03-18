@@ -1,14 +1,17 @@
-import { Table, Space } from "antd";
+import { Table, Space, Button } from "antd";
 import { ColumnsType } from "antd/lib/table";
-import { Event } from "../../interfaces/Event";
-import { Registration } from "../../interfaces/Registration";
+import { useEventRegistration } from "../../hooks/";
+import { Event, Registration } from "../../interfaces";
 
 interface Props {
   events?: Event[];
   registrations?: Registration[];
+  refetch?: () => void;
 }
 
-function EventsList({ events, registrations }: Props) {
+function EventsList({ events, registrations, refetch }: Props) {
+  const { createRegistration, deleteRegistration } = useEventRegistration();
+
   const columns: ColumnsType<object> = [
     {
       title: "Name",
@@ -44,6 +47,7 @@ function EventsList({ events, registrations }: Props) {
     columns.push({
       title: "Action",
       key: "action",
+      width: "13rem",
       render: (text, record: any) => {
         if (
           registrations?.some(
@@ -52,15 +56,38 @@ function EventsList({ events, registrations }: Props) {
         ) {
           return (
             <Space size="middle">
-              <a>Cancel registration</a>
+              <Button
+                type="default"
+                danger
+                onClick={() =>
+                  deleteRegistration({ eventId: record.id }).then(
+                    () => refetch && refetch()
+                  )
+                }
+              >
+                Cancel registration
+              </Button>
             </Space>
           );
         } else if (record.capacity === record.registered) {
-          return <Space size="middle">Event is full</Space>;
+          return (
+            <Button type="default" disabled>
+              Event is full
+            </Button>
+          );
         } else {
           return (
             <Space size="middle">
-              <a>Register</a>
+              <Button
+                type="default"
+                onClick={() =>
+                  createRegistration({ eventId: record.id }).then(
+                    () => refetch && refetch()
+                  )
+                }
+              >
+                Register
+              </Button>
             </Space>
           );
         }
@@ -75,6 +102,7 @@ function EventsList({ events, registrations }: Props) {
         events ?? registrations?.map((registration) => registration.event)
       }
       pagination={false}
+      rowKey="id"
     />
   );
 }

@@ -7,7 +7,7 @@ import { Event } from "../interfaces/Event";
 import { useUser } from "../providers/UserProvider";
 
 function Events() {
-  const { data, loading, error } = useFetchData<Event[]>({
+  const { data, loading, error, refetch } = useFetchData<Event[]>({
     method: Methods.get,
     path: API_ROUTES.events,
   });
@@ -18,7 +18,11 @@ function Events() {
       <>
         {loading && <p>Loading...</p>}
         {data && (
-          <EventsList events={data} registrations={user?.registrations} />
+          <EventsList
+            events={data}
+            registrations={user?.registrations}
+            refetch={refetch}
+          />
         )}
         {error && <Alert type="error" message={`${error}`} />}
       </>

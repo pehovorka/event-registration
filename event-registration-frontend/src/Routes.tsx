@@ -1,7 +1,7 @@
 import { Navigate, Route, Routes as Switch } from "react-router-dom";
 
 import { Events, Profile } from "./pages";
-import { useInitialLogin } from "./providers/UserProvider";
+import { useUserInitialLogin } from "./hooks";
 
 export const route = {
   events: () => "/events",
@@ -9,7 +9,7 @@ export const route = {
 };
 
 export function Routes() {
-  useInitialLogin();
+  useUserInitialLogin();
   return (
     <Switch>
       <Route path={route.events()} element={<Events />} />
