@@ -16,7 +16,7 @@ import javax.validation.Valid;
 import java.net.URI;
 
 @RestController
-@RequestMapping("/registrations")
+@RequestMapping("api/v1/registrations")
 @CrossOrigin
 public class EventRegistrationController {
     private final EventRegistrationService ers;
@@ -49,7 +49,7 @@ public class EventRegistrationController {
 
         EventRegistration registration = ers.register(eventId, userUid);
 
-        URI location = URI.create("/registrations/" + registration.getId());
+        URI location = URI.create("/api/v1/registrations/" + registration.getId());
         return ResponseEntity.created(location).body(registration);
     }
 

@@ -13,7 +13,7 @@ import java.util.Optional;
 import java.util.Set;
 
 @RestController
-@RequestMapping("/events")
+@RequestMapping("/api/v1/events")
 @CrossOrigin
 public class EventController {
     private final EventService es;

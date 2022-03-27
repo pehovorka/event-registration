@@ -13,7 +13,7 @@ import java.net.URI;
 import java.util.Set;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/v1/users")
 @CrossOrigin
 public class UserController {
     private final UserService us;
@@ -51,7 +51,7 @@ public class UserController {
     @PostMapping()
     public ResponseEntity<User> registerUser() {
         User user = us.registerNewUser();
-        URI location = URI.create("/users/" + user.getUid());
+        URI location = URI.create("/api/v1/users/" + user.getUid());
         return ResponseEntity.created(location).body(user);
     }
 }
