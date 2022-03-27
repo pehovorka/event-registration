@@ -1,5 +1,6 @@
 import { Table, Space, Button } from "antd";
 import { ColumnsType } from "antd/lib/table";
+import { useState } from "react";
 import { useEventRegistration } from "../../hooks/";
 import { Event, Registration } from "../../interfaces";
 
@@ -10,7 +11,9 @@ interface Props {
 }
 
 function EventsList({ events, registrations, refetch }: Props) {
-  const { createRegistration, deleteRegistration } = useEventRegistration();
+  const { createRegistration, deleteRegistration, loading } =
+    useEventRegistration();
+  const [idLoading, setIdLoading] = useState<Event["id"]>();
 
   const columns: ColumnsType<object> = [
     {
@@ -59,11 +62,13 @@ function EventsList({ events, registrations, refetch }: Props) {
               <Button
                 type="default"
                 danger
-                onClick={() =>
+                loading={record.id === idLoading ? loading : false}
+                onClick={() => {
+                  setIdLoading(record.id);
                   deleteRegistration({ eventId: record.id }).then(
                     () => refetch && refetch()
-                  )
-                }
+                  );
+                }}
               >
                 Cancel registration
               </Button>
@@ -80,11 +85,13 @@ function EventsList({ events, registrations, refetch }: Props) {
             <Space size="middle">
               <Button
                 type="default"
-                onClick={() =>
+                loading={record.id === idLoading ? loading : false}
+                onClick={() => {
+                  setIdLoading(record.id);
                   createRegistration({ eventId: record.id }).then(
                     () => refetch && refetch()
-                  )
-                }
+                  );
+                }}
               >
                 Register
               </Button>
