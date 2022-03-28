@@ -4,9 +4,7 @@ import { PageLayout } from "../components";
 import { UserInfo } from "../components/profile";
 import { useUser } from "../providers/UserProvider";
 
-type Props = {};
-
-function Profile({}: Props) {
+function Profile() {
   const { state: user } = useUser();
   return (
     <PageLayout title="My Profile">

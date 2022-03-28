@@ -4,14 +4,17 @@ import "./App.css";
 import { BrowserRouter } from "react-router-dom";
 import { Routes } from "./Routes";
 import { UserProvider } from "./providers/UserProvider";
+import { AdminProvider } from "./providers/AdminProvider";
 
 function App() {
   return (
-    <UserProvider>
-      <BrowserRouter>
-        <Routes />
-      </BrowserRouter>
-    </UserProvider>
+    <AdminProvider>
+      <UserProvider>
+        <BrowserRouter>
+          <Routes />
+        </BrowserRouter>
+      </UserProvider>
+    </AdminProvider>
   );
 }
 

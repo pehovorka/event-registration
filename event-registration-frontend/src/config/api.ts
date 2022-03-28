@@ -5,4 +5,7 @@ export const API_ROUTES = {
   events: "/events",
   registrations: "/registrations",
   users: "/users",
+  admin: {
+    login: "/admin-login",
+  },
 };

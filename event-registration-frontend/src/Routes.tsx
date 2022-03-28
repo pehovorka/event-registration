@@ -1,6 +1,6 @@
 import { Navigate, Route, Routes as Switch } from "react-router-dom";
 
-import { Events, Profile } from "./pages";
+import { AdminLogin, Events, Profile } from "./pages";
 import { useUserInitialLogin } from "./hooks";
 
 export const route = {
@@ -19,7 +19,7 @@ export function Routes() {
     <Switch>
       <Route path={route.events} element={<Events />} />
       <Route path={route.profile} element={<Profile />} />
-      <Route path={route.admin.login} element={<h1>Admin login screen</h1>} />
+      <Route path={route.admin.login} element={<AdminLogin />} />
       <Route
         path={route.admin.events}
         element={<h1>Admin list of events</h1>}
