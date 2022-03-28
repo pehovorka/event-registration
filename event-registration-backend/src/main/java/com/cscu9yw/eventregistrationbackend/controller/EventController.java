@@ -9,8 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+
 
 @RestController
 @RequestMapping("/api/v1/events")
@@ -24,16 +23,14 @@ public class EventController {
     @JsonView(Views.Public.class)
     @GetMapping()
     public List<Event> getAllEvents() {
-        List<Event> events = es.getAllEvents();
-        return events;
+        return es.getAllEvents();
     }
 
     @GetMapping("/{id}")
-    public Optional<Event> getEventById(@PathVariable Long id){
-        Optional<Event> event = es.getEventById(id);
-        if (event.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-        }
-        return event;
+    public Event getEventById(@PathVariable Long id){
+        return es
+                .getEventById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
     }
 }

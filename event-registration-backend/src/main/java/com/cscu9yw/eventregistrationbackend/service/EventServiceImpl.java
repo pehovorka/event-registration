@@ -17,7 +17,7 @@ public class EventServiceImpl implements EventService {
     }
 
     public List<Event> getAllEvents() {
-        return (List<Event>) db.findByOrderByDateDesc();
+        return db.findByOrderByDateDesc();
     }
 
     public Optional<Event> getEventById(Long id) {

@@ -32,8 +32,12 @@ public class EventRegistrationServiceImpl implements EventRegistrationService {
     }
 
     public EventRegistration register(Long eventId, String userUid) {
-        Event event = eventRepository.findById(eventId).orElseThrow(() -> new EntityNotFoundException("Event not found: " + eventId));
-        User user = userRepository.findByUid(userUid).orElseThrow(() -> new EntityNotFoundException("User not found: " + userUid));
+        Event event = eventRepository
+                .findById(eventId)
+                .orElseThrow(() -> new EntityNotFoundException("Event not found: " + eventId));
+        User user = userRepository
+                .findByUid(userUid)
+                .orElseThrow(() -> new EntityNotFoundException("User not found: " + userUid));
 
         EventRegistration registration = eventRegistrationRepository.save(new EventRegistration(user, event, LocalDateTime.now()));
         event.setRegistered(event.getRegistered() + 1);
@@ -44,7 +48,9 @@ public class EventRegistrationServiceImpl implements EventRegistrationService {
     @Transactional
     public void deleteRegistration(Long eventId, String userUid) {
         EventRegistrationKey key = new EventRegistrationKey(userUid, eventId);
-        eventRepository.findById(eventId).ifPresent(event -> event.setRegistered(event.getRegistered() - 1));
+        eventRepository
+                .findById(eventId)
+                .ifPresent((event) -> event.setRegistered(event.getRegistered() - 1));
         eventRegistrationRepository.deleteById(key);
     }
 
@@ -52,15 +58,11 @@ public class EventRegistrationServiceImpl implements EventRegistrationService {
 
     public boolean userExists(String userUid) {
         return userRepository.existsByUid(userUid);
-    }
-
-    ;
+    };
 
     public boolean eventExists(Long eventId) {
         return eventRepository.existsById(eventId);
-    }
-
-    ;
+    };
 
     public boolean registrationExists(String userUid, Long eventId) {
         EventRegistrationKey key = new EventRegistrationKey(userUid, eventId);
@@ -68,6 +70,9 @@ public class EventRegistrationServiceImpl implements EventRegistrationService {
     }
 
     public boolean eventIsFull(Long eventId){
-        return eventRepository.findById(eventId).get().getRegistered() == eventRepository.findById(eventId).get().getCapacity();
+        return eventRepository
+                .findById(eventId)
+                .map((event) -> event.getRegistered() == event.getCapacity())
+                .orElseThrow(() -> new EntityNotFoundException("Event with id: " + eventId + " not found!"));
     }
 }

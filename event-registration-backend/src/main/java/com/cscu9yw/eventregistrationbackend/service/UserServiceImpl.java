@@ -33,15 +33,19 @@ public class UserServiceImpl implements UserService {
                 .accept(MediaType.APPLICATION_JSON).retrieve()
                 .bodyToMono(RandomUserResponse.class).block(REQUEST_TIMEOUT);
 
+        assert randomUserResponse != null;
         return db.save(randomUserResponse.getUser());
     }
 
     public User getUser(String uid) {
-        return db.findByUid(uid).orElseThrow(() -> new EntityNotFoundException("User not found: " + uid));
+        return db.findByUid(uid)
+                .orElseThrow(() -> new EntityNotFoundException("User not found: " + uid));
     }
 
     public Set<EventRegistration> getUserRegistrations(String uid) {
-        return db.findByUid(uid).orElseThrow(() -> new EntityNotFoundException("User not found: " + uid)).getRegistrations();
+        return db.findByUid(uid)
+                .map(User::getRegistrations)
+                .orElseThrow(() -> new EntityNotFoundException("User not found: " + uid));
 
     }
 

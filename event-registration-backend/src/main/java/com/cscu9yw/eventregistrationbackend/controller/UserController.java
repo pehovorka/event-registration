@@ -25,12 +25,11 @@ public class UserController {
     @GetMapping("/{userUid}")
     public ResponseEntity<User> getUser(@PathVariable String userUid,
                                         @RequestHeader("X-User-Uid") String userUidHeader) {
-        if (!userUid.equals(userUidHeader)) {
+        if (!userUid.equals(userUidHeader))
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
-        }
-        if (!us.userExists(userUid)) {
+        if (!us.userExists(userUid))
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-        }
+
         User user = us.getUser(userUid);
         return ResponseEntity.ok().body(user);
     }
@@ -38,12 +37,11 @@ public class UserController {
     @GetMapping("/{userUid}/registrations")
     public ResponseEntity<Set<EventRegistration>> getUserRegistrations(@PathVariable String userUid,
                                                                        @RequestHeader("X-User-Uid") String userUidHeader) {
-        if (!userUid.equals(userUidHeader)) {
+        if (!userUid.equals(userUidHeader))
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
-        }
-        if (!us.userExists(userUid)) {
+        if (!us.userExists(userUid))
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-        }
+
         Set<EventRegistration> registrations = us.getUserRegistrations(userUid);
         return ResponseEntity.ok().body(registrations);
     }
