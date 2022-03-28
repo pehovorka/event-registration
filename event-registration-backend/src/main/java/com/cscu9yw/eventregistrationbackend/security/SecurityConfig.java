@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -39,13 +40,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(authenticationManagerBean(), environment);
+        // Change the URL of the admin login endpoint from default '/login'.
         customAuthenticationFilter.setFilterProcessesUrl("/api/v1/admin-login");
 
+        // Our sessions are stateless, we use JWT. For that reason, CSRF is disabled.
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
+        // Require admin auth for displaying registered users for an event.
+        http.authorizeHttpRequests().antMatchers("/api/v1/events/**/users/**").authenticated();
         http.authorizeHttpRequests().anyRequest().permitAll();
         http.addFilter(customAuthenticationFilter);
         http.addFilterBefore(new CustomAuthorizationFilter(environment), UsernamePasswordAuthenticationFilter.class);
+
+        // Set 'X-Frame-Options' to 'SAMEORIGIN' in order for H2 console to work.
+        http.headers().frameOptions().sameOrigin();
     }
 
     @Bean
