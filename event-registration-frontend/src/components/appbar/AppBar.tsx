@@ -20,8 +20,11 @@ function AppBar() {
         </Col>
         <Col flex="auto">
           <Menu theme="light" mode="horizontal" selectedKeys={[pathname]}>
-            <Menu.Item key={route.events()}>
-              <NavLink to={route.events()}>Events</NavLink>
+            <Menu.Item key={route.events}>
+              <NavLink to={route.events}>Events</NavLink>
+            </Menu.Item>
+            <Menu.Item key={route.admin.login}>
+              <NavLink to={route.admin.login}>Administration</NavLink>
             </Menu.Item>
             <UserPopover />
           </Menu>

@@ -80,7 +80,7 @@ function UserPopover() {
             ) : (
               <>
                 <Menu.Item key="3">
-                  <Link to={route.profile()}>My Profile</Link>
+                  <Link to={route.profile}>My Profile</Link>
                 </Menu.Item>
                 <Menu.Item
                   key="4"
@@ -105,7 +105,7 @@ function UserPopover() {
       onVisibleChange={handleMainVisibleChange}
       placement="bottomRight"
     >
-      <Menu.Item style={{ marginLeft: "auto" }} key={route.profile()}>
+      <Menu.Item style={{ marginLeft: "auto" }} key={route.profile}>
         {user ? user.name : "Anonymous"}
       </Menu.Item>
     </Popover>
