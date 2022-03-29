@@ -1,6 +1,7 @@
-import { Table, Space, Button } from "antd";
+import { Table, Space, Button, Col, Row } from "antd";
 import { ColumnsType } from "antd/lib/table";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { useEventRegistration } from "../../hooks/";
 import { Event, Registration } from "../../interfaces";
 
@@ -8,9 +9,10 @@ interface Props {
   events?: Event[];
   registrations?: Registration[];
   refetch?: () => void;
+  isAdmin?: boolean;
 }
 
-function EventsList({ events, registrations, refetch }: Props) {
+function EventsList({ events, registrations, refetch, isAdmin }: Props) {
   const { createRegistration, deleteRegistration, loading } =
     useEventRegistration();
   const [idLoading, setIdLoading] = useState<Event["id"]>();
@@ -20,6 +22,8 @@ function EventsList({ events, registrations, refetch }: Props) {
       title: "Name",
       dataIndex: "name",
       key: "name",
+      render: (name, record: Partial<Event>) =>
+        !isAdmin ? name : <Link to={record.id?.toString() || "#"}>{name}</Link>,
     },
     {
       title: "Date",
@@ -46,7 +50,7 @@ function EventsList({ events, registrations, refetch }: Props) {
     },
   ];
 
-  if (registrations) {
+  if (registrations && !isAdmin) {
     columns.push({
       title: "Action",
       key: "action",
@@ -99,6 +103,30 @@ function EventsList({ events, registrations, refetch }: Props) {
           );
         }
       },
+    });
+  } else if (isAdmin) {
+    columns.push({
+      title: "Action",
+      key: "action",
+      width: "13rem",
+      render: (text, record: any) => (
+        <Row gutter={8}>
+          <Col>
+            <Space size="middle">
+              <Button type="default" onClick={() => {}}>
+                Edit
+              </Button>
+            </Space>
+          </Col>
+          <Col>
+            <Space size="middle">
+              <Button type="default" danger onClick={() => {}}>
+                Delete
+              </Button>
+            </Space>
+          </Col>
+        </Row>
+      ),
     });
   }
 
