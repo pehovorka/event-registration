@@ -1,5 +1,4 @@
 import { Alert } from "antd";
-import React from "react";
 import { PageLayout } from "../components";
 import { UserInfo } from "../components/profile";
 import { useUser } from "../providers/UserProvider";

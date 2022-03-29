@@ -1,8 +1,8 @@
 import { Navigate, Route, Routes as Switch } from "react-router-dom";
 
-import { AdminLogin, Events, Profile } from "./pages";
+import { AdminLogin, Events, Profile, Event } from "./pages";
 import { useUserInitialLogin } from "./hooks";
-import AuthGate from "./components/admin/AuthGate";
+import { AuthGate } from "./components/admin/";
 
 export const route = {
   events: "/events",
@@ -10,7 +10,7 @@ export const route = {
   admin: {
     login: "/admin/login",
     events: "/admin/events",
-    event: "/admin/event/:id",
+    event: "/admin/events/:id",
   },
 };
 
@@ -26,6 +26,14 @@ export function Routes() {
         element={
           <AuthGate>
             <Events isAdmin />
+          </AuthGate>
+        }
+      />
+      <Route
+        path={route.admin.event}
+        element={
+          <AuthGate>
+            <Event />
           </AuthGate>
         }
       />

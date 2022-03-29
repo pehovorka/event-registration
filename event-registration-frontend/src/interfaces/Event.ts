@@ -1,3 +1,5 @@
+import { Registration } from "./Registration";
+
 export interface Event {
   id: number;
   name: string;
@@ -5,4 +7,5 @@ export interface Event {
   duration: number;
   capacity: number;
   registered: number;
+  registrations?: Registration[];
 }
