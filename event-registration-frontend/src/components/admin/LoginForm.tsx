@@ -1,13 +1,31 @@
 import { Button, Form, Input } from "antd";
+import { useEffect, useState } from "react";
 import useAdminLogin from "../../hooks/useAdminLogin";
+import { useNavigate } from "react-router-dom";
+import { route } from "../../Routes";
 
 function LoginForm() {
-  const { login, error } = useAdminLogin();
+  const { login, error, data, loading } = useAdminLogin();
+  const navigate = useNavigate();
+  const [errorMessage, setErrorMessage] = useState<string | undefined>();
 
-  const onFinish = (data: { username: string; password: string }) => {
-    login(data.username, data.password);
+  const onFinish = async (data: { username: string; password: string }) => {
+    await login(data.username, data.password);
   };
-  const onFinishFailed = () => {};
+
+  useEffect(() => {
+    if (!loading && !error && data) {
+      navigate(route.admin.events);
+    }
+
+    if (error) {
+      if (error?.response?.status === 401) {
+        setErrorMessage("Incorrect username or password!");
+      } else {
+        setErrorMessage(`Login error: ${error.message}`);
+      }
+    }
+  }, [error, loading, navigate, data]);
 
   return (
     <Form
@@ -16,7 +34,6 @@ function LoginForm() {
       labelCol={{ span: 3 }}
       wrapperCol={{ span: 10 }}
       onFinish={onFinish}
-      onFinishFailed={onFinishFailed}
       autoComplete="off"
     >
       <Form.Item
@@ -24,9 +41,7 @@ function LoginForm() {
         name="username"
         rules={[{ required: true, message: "Please input your username!" }]}
         validateStatus={error ? "error" : ""}
-        help={
-          error?.response?.status === 401 && "Incorrect username or password!"
-        }
+        help={errorMessage}
       >
         <Input />
       </Form.Item>
@@ -36,9 +51,7 @@ function LoginForm() {
         name="password"
         rules={[{ required: true, message: "Please input your password!" }]}
         validateStatus={error ? "error" : ""}
-        help={
-          error?.response?.status === 401 && "Incorrect username or password!"
-        }
+        help={errorMessage}
       >
         <Input.Password />
       </Form.Item>

@@ -22,10 +22,12 @@ const useAdminLogin = () => {
       );
       setData(response);
       setError(undefined);
+      setLoading(false);
       adminContext.dispatch({ type: "login", data: response });
       localStorage.setItem("adminAccessToken", response.accessToken);
       localStorage.setItem("adminRefreshToken", response.refreshToken);
     } catch (error: unknown | AxiosError) {
+      setLoading(false);
       if (axios.isAxiosError(error)) {
         setError(error);
         localStorage.removeItem("adminAccessToken");
@@ -34,7 +36,6 @@ const useAdminLogin = () => {
         console.error("Admin login error", error);
       }
     }
-    setLoading(false);
   };
 
   return { login, data, loading, error };
