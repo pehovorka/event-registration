@@ -13,6 +13,7 @@ function Event() {
   const { data, loading, error } = useFetchData<EventInterface>({
     method: Methods.get,
     path: `${API_ROUTES.events}/${id}`,
+    withAdminAuth: true,
   });
 
   return (
