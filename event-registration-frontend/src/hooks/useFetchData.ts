@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
-import axios, { AxiosRequestConfig } from "axios";
+import { AxiosInstance } from "axios";
 import { API_BASE_URL } from "../config/api";
-import { useAdmin } from "../providers/AdminProvider";
+import { api, authApi } from "../services/api";
 
 export enum Methods {
   get,
@@ -21,46 +21,48 @@ const useFetchData = <T>({ method, path, body, withAdminAuth }: Props) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<unknown | null>(null);
 
-  const { state: admin } = useAdmin();
-
-  const fetchData = useCallback(async () => {
-    const config: AxiosRequestConfig = {};
-    if (withAdminAuth) {
-      config.headers = { Authorization: `Bearer ${admin?.accessToken}` };
-    }
-
-    try {
-      let response;
-      method === Methods.get &&
-        ({ data: response } = await axios.get<T>(
-          `${API_BASE_URL}${path}`,
-          config
-        ));
-      method === Methods.post &&
-        ({ data: response } = await axios.post<T>(
-          `${API_BASE_URL}${path}`,
-          body,
-          config
-        ));
-      method === Methods.delete &&
-        ({ data: response } = await axios.delete<T>(`${API_BASE_URL}${path}`, {
-          ...config,
-          data: body,
-        }));
-      setData(response);
-    } catch (error) {
-      setError(error);
-      console.error(error);
-    }
-    setLoading(false);
-  }, [body, method, path, admin, withAdminAuth]);
+  const fetchData = useCallback(
+    async (fetcher: AxiosInstance) => {
+      try {
+        let response;
+        method === Methods.get &&
+          ({ data: response } = await fetcher.get<T>(`${API_BASE_URL}${path}`));
+        method === Methods.post &&
+          ({ data: response } = await fetcher.post<T>(
+            `${API_BASE_URL}${path}`,
+            body
+          ));
+        method === Methods.delete &&
+          ({ data: response } = await fetcher.delete<T>(
+            `${API_BASE_URL}${path}`,
+            {
+              data: body,
+            }
+          ));
+        setData(response);
+      } catch (error) {
+        setError(error);
+        console.error(error);
+      }
+      setLoading(false);
+    },
+    [body, method, path]
+  );
 
   useEffect(() => {
-    fetchData();
-  }, [method, path, body, fetchData]);
+    if (withAdminAuth) {
+      fetchData(authApi);
+    } else {
+      fetchData(api);
+    }
+  }, [method, path, body, fetchData, withAdminAuth]);
 
   const refetch = () => {
-    fetchData();
+    if (withAdminAuth) {
+      fetchData(authApi);
+    } else {
+      fetchData(api);
+    }
   };
 
   return {
