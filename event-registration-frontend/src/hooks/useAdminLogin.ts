@@ -28,10 +28,10 @@ const useAdminLogin = () => {
       localStorage.setItem("adminRefreshToken", response.refreshToken);
     } catch (error: unknown | AxiosError) {
       setLoading(false);
+      localStorage.removeItem("adminAccessToken");
+      localStorage.removeItem("adminRefreshToken");
       if (axios.isAxiosError(error)) {
         setError(error);
-        localStorage.removeItem("adminAccessToken");
-        localStorage.removeItem("adminRefreshToken");
       } else {
         console.error("Admin login error", error);
       }

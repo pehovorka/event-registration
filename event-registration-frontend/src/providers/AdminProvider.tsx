@@ -11,8 +11,21 @@ const AdminContext = createContext<
   { state: State; dispatch: Dispatch } | undefined
 >(undefined);
 
+const getInitialState = () => {
+  const accessToken = localStorage.getItem("adminAccessToken");
+  const refreshToken = localStorage.getItem("adminRefreshToken");
+
+  if (accessToken && refreshToken) {
+    return {
+      accessToken: accessToken,
+      refreshToken: refreshToken,
+    };
+  }
+  return undefined;
+};
+
 function AdminProvider({ children }: AdminProviderProps) {
-  const [state, dispatch] = useReducer(adminReducer, undefined);
+  const [state, dispatch] = useReducer(adminReducer, getInitialState());
   const value = { state, dispatch };
   return (
     <AdminContext.Provider value={value}>{children}</AdminContext.Provider>
