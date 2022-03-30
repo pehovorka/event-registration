@@ -1,8 +1,6 @@
 package com.cscu9yw.eventregistrationbackend.model;
 
-import com.cscu9yw.eventregistrationbackend.view.Views;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonView;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -13,23 +11,16 @@ import java.util.Set;
 public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @JsonView(Views.Public.class)
     private Long id;
-    @JsonView(Views.Public.class)
     private String name;
-    @JsonView(Views.Public.class)
     private LocalDateTime date;
-    @JsonView(Views.Public.class)
     private int duration;
-    @JsonView(Views.Public.class)
     private int capacity;
-    @JsonView(Views.Public.class)
     private int registered;
 
 
     @OneToMany(mappedBy = "event")
     @JsonIgnoreProperties("event")
-    @JsonView(Views.Internal.class)
     private Set<EventRegistration> registrations = new HashSet<>();
 
     public Event(String name, LocalDateTime date, int duration, int capacity) {

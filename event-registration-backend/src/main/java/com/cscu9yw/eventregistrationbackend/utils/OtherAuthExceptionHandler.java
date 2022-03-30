@@ -7,12 +7,12 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.springframework.http.HttpStatus.FORBIDDEN;
+import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 public class OtherAuthExceptionHandler {
     public OtherAuthExceptionHandler(String message, HttpServletResponse response) throws IOException {
-        response.setStatus(FORBIDDEN.value());
+        response.setStatus(UNAUTHORIZED.value());
         Map<String, String> error = new HashMap<>();
         error.put("cause", "OTHER");
         error.put("error_message", message);
