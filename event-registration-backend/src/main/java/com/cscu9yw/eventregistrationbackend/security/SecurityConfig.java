@@ -50,7 +50,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(authenticationManagerBean(), environment);
         // Change the URL of the admin login endpoint from default '/login'.
-        customAuthenticationFilter.setFilterProcessesUrl("/api/v1/admin-login");
+        customAuthenticationFilter.setFilterProcessesUrl("/api/v1/admin/login");
 
         // Our sessions are stateless, we use JWT. For that reason, CSRF is disabled.
         http.csrf().disable();

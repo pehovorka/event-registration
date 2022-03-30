@@ -14,7 +14,6 @@ import java.util.Set;
 
 @RestController
 @RequestMapping("/api/v1/users")
-@CrossOrigin
 public class UserController {
     private final UserService us;
 

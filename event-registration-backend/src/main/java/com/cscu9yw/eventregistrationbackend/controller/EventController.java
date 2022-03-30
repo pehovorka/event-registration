@@ -13,9 +13,9 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/events")
-@CrossOrigin
 public class EventController {
     private final EventService es;
+
     public EventController(EventService es) {
         this.es = es;
     }
@@ -27,7 +27,7 @@ public class EventController {
     }
 
     @GetMapping("/{id}")
-    public Event getEventById(@PathVariable Long id){
+    public Event getEventById(@PathVariable Long id) {
         return es
                 .getEventById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));

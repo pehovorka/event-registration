@@ -11,7 +11,6 @@ import java.net.URI;
 
 @RestController
 @RequestMapping("api/v1/registrations")
-@CrossOrigin
 public class EventRegistrationController {
     private final EventRegistrationService ers;
 
@@ -54,6 +53,6 @@ public class EventRegistrationController {
         if (!ers.registrationExists(userUid, eventId))
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Registration doesn't exist!");
 
-        ers.deleteRegistration(eventId,userUid);
+        ers.deleteRegistration(eventId, userUid);
     }
 }
