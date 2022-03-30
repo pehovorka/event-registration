@@ -66,12 +66,12 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         // Generate new JWT tokens.
         String accessToken = JWT.create()
                 .withSubject(adminUser.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() + 1 * 60 * 1000)) // 1 minute
+                .withExpiresAt(new Date(System.currentTimeMillis() + 60 * 1000)) // 1 minute
                 .withIssuer(request.getRequestURL().toString()) // Admin login EP path
                 .sign(algorithm);
         String refreshToken = JWT.create()
                 .withSubject(adminUser.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() + 2 * 60 * 1000)) // 2 minutes
+                .withExpiresAt(new Date(System.currentTimeMillis() + 120 * 60 * 1000)) // 120 minutes
                 .withIssuer(request.getRequestURL().toString()) // Admin login EP path
                 .sign(algorithm);
 

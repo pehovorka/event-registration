@@ -12,7 +12,7 @@ public class User {
     private String uid;
     private String name;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.MERGE)
     private Set<Interest> interests;
 
     @OneToMany(mappedBy = "user")

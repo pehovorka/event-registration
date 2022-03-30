@@ -46,7 +46,7 @@ public class AdminController {
                 // Generate new JWT access token.
                 String accessToken = JWT.create()
                         .withSubject(validator.getAdmin().getUsername())
-                        .withExpiresAt(new Date(System.currentTimeMillis() + 15 * 1000)) // 15 sec
+                        .withExpiresAt(new Date(System.currentTimeMillis() + 60 * 1000)) // 1 min
                         .withIssuer(request.getRequestURL().toString()) // Refresh token EP path
                         .sign(validator.getAlgorithm());
 

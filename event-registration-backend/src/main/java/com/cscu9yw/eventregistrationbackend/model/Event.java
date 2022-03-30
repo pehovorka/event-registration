@@ -1,6 +1,9 @@
 package com.cscu9yw.eventregistrationbackend.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+import org.springframework.beans.factory.annotation.Value;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -16,8 +19,6 @@ public class Event {
     private LocalDateTime date;
     private int duration;
     private int capacity;
-    private int registered;
-
 
     @OneToMany(mappedBy = "event")
     @JsonIgnoreProperties("event")
@@ -78,11 +79,7 @@ public class Event {
     }
 
     public int getRegistered() {
-        return registered;
-    }
-
-    public void setRegistered(int registered) {
-        this.registered = registered;
+        return registrations.size();
     }
 
     @Override
