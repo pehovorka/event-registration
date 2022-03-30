@@ -39,7 +39,10 @@ export const useApi = () => {
     },
     async (error) => {
       if (axios.isAxiosError(error)) {
-        if (error.response?.status === 403) {
+        if (
+          error.response?.status === 401 &&
+          error.response.data?.cause === "TOKEN_EXPIRED"
+        ) {
           const { accessToken } = await getNewAccessToken();
 
           const newReqConfig = {

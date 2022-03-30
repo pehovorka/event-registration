@@ -24,6 +24,14 @@ const useRefreshToken = () => {
       });
       return { accessToken, refreshToken };
     } catch (error) {
+      if (axios.isAxiosError(error)) {
+        if (
+          error.response?.status === 401 &&
+          error.response.data?.cause === "TOKEN_EXPIRED"
+        ) {
+          dispatch({ type: "logout" });
+        }
+      }
       return Promise.reject(error);
     }
   };
