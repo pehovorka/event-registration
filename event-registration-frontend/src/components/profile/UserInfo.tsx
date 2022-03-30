@@ -11,8 +11,12 @@ function UserInfo({ user }: Props) {
       {user.interests?.length
         ? user.interests.map((interest) => <Tag>{interest.name}</Tag>)
         : "No interests."}
-      <h3 style={{ marginTop: "1rem" }}>Registrations</h3>
-      <EventsList registrations={user.registrations} />
+      {user.registrations && (
+        <>
+          <h3 style={{ marginTop: "1rem" }}>Registrations</h3>
+          <EventsList registrations={user.registrations} />
+        </>
+      )}
     </PageHeader>
   );
 }

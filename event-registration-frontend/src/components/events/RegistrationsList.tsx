@@ -1,6 +1,7 @@
-import { Button, Card, Table } from "antd";
+import { Button, Card, Modal, Table } from "antd";
 import { ColumnsType } from "antd/lib/table";
 import { Registration } from "../../interfaces";
+import { UserInfo } from "../profile";
 
 type Props = {
   registrations: Registration[];
@@ -12,6 +13,21 @@ function RegistrationsList({ registrations }: Props) {
       title: "Person",
       dataIndex: ["user", "name"],
       key: "name",
+      render: (value: String, record: Partial<Registration>) => {
+        return (
+          <Button
+            type="link"
+            onClick={() =>
+              Modal.info({
+                content: <UserInfo user={record.user!} />,
+                width: "50%",
+              })
+            }
+          >
+            {value}
+          </Button>
+        );
+      },
     },
     {
       title: "Person UID",
@@ -35,7 +51,11 @@ function RegistrationsList({ registrations }: Props) {
       title={`Attendees (${registrations.length})`}
       bordered={false}
       style={{ marginTop: "1rem" }}
-      extra={<Button>Validate attendees</Button>}
+      extra={
+        <Button disabled={registrations.length === 0}>
+          Validate attendees
+        </Button>
+      }
     >
       <Table
         columns={columns}
