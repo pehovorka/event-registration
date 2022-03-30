@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
-import { AxiosInstance } from "axios";
+import axios, { AxiosInstance } from "axios";
 import { API_BASE_URL } from "../config/api";
-import { api, authApi } from "../services/api";
+import { useApi } from "../services/api";
 
 export enum Methods {
   get,
@@ -20,6 +20,7 @@ const useFetchData = <T>({ method, path, body, withAdminAuth }: Props) => {
   const [data, setData] = useState<T | undefined>();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<unknown | null>(null);
+  const { api, authApi } = useApi();
 
   const fetchData = useCallback(
     async (fetcher: AxiosInstance) => {
@@ -41,8 +42,12 @@ const useFetchData = <T>({ method, path, body, withAdminAuth }: Props) => {
           ));
         setData(response);
       } catch (error) {
-        setError(error);
-        console.error(error);
+        if (axios.isAxiosError(error)) {
+          setError(error);
+          console.error(error);
+        } else {
+          console.error("Fetch data error: ", error);
+        }
       }
       setLoading(false);
     },
@@ -55,7 +60,7 @@ const useFetchData = <T>({ method, path, body, withAdminAuth }: Props) => {
     } else {
       fetchData(api);
     }
-  }, [method, path, body, fetchData, withAdminAuth]);
+  }, [method, path, body, fetchData, withAdminAuth, api, authApi]);
 
   const refetch = () => {
     if (withAdminAuth) {

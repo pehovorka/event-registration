@@ -6,6 +6,7 @@ export const API_ROUTES = {
   registrations: "/registrations",
   users: "/users",
   admin: {
-    login: "/admin-login",
+    login: "/admin/login",
+    refresh: "/admin/token/refresh",
   },
 };
