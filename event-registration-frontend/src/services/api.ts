@@ -19,49 +19,57 @@ export const useApi = () => {
     []
   );
 
-  authApi.interceptors.request.use(
-    (config) => {
-      // Add Authorization header to every sent request
-      config.headers = {
-        ...config.headers,
-        Authorization: `Bearer ${state?.accessToken}`,
-      };
-      return config;
-    },
-    (error) => {
-      return Promise.reject(error);
-    }
+  useMemo(
+    () =>
+      authApi.interceptors.request.use(
+        (config) => {
+          // Add Authorization header to every sent request
+          config.headers = {
+            ...config.headers,
+            Authorization: `Bearer ${state?.accessToken}`,
+          };
+          return config;
+        },
+        (error) => {
+          return Promise.reject(error);
+        }
+      ),
+    [authApi.interceptors.request, state?.accessToken]
   );
 
-  authApi.interceptors.response.use(
-    (response) => {
-      return response;
-    },
-    async (error) => {
-      if (axios.isAxiosError(error)) {
-        if (
-          error.response?.status === 401 &&
-          error.response.data?.cause === "TOKEN_EXPIRED"
-        ) {
-          const { accessToken } = await getNewAccessToken();
+  useMemo(
+    () =>
+      authApi.interceptors.response.use(
+        (response) => {
+          return response;
+        },
+        async (error) => {
+          if (axios.isAxiosError(error)) {
+            if (
+              error.response?.status === 401 &&
+              error.response.data?.cause === "TOKEN_EXPIRED"
+            ) {
+              const { accessToken } = await getNewAccessToken();
 
-          const newReqConfig = {
-            ...error.config,
-            headers: {
-              ...error.config.headers,
-              Authorization: `Bearer ${accessToken}`,
-            },
-          };
+              const newReqConfig = {
+                ...error.config,
+                headers: {
+                  ...error.config.headers,
+                  Authorization: `Bearer ${accessToken}`,
+                },
+              };
 
-          try {
-            return await axios.request(newReqConfig);
-          } catch (error) {
-            return Promise.reject(error);
+              try {
+                return await axios.request(newReqConfig);
+              } catch (error) {
+                return Promise.reject(error);
+              }
+            }
           }
+          return Promise.reject(error);
         }
-      }
-      return Promise.reject(error);
-    }
+      ),
+    [authApi.interceptors.response, getNewAccessToken]
   );
 
   const api = useMemo(

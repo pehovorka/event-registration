@@ -14,16 +14,25 @@ interface Props {
   path: string;
   body?: any;
   withAdminAuth?: boolean;
+  skip?: boolean;
 }
 
-const useFetchData = <T>({ method, path, body, withAdminAuth }: Props) => {
+const useFetchData = <T>({
+  method,
+  path,
+  body,
+  withAdminAuth,
+  skip,
+}: Props) => {
   const [data, setData] = useState<T | undefined>();
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState<boolean>();
   const [error, setError] = useState<unknown | null>(null);
   const { api, authApi } = useApi();
 
   const fetchData = useCallback(
     async (fetcher: AxiosInstance) => {
+      setLoading(true);
+      setError(null);
       try {
         let response;
         method === Methods.get &&
@@ -55,12 +64,14 @@ const useFetchData = <T>({ method, path, body, withAdminAuth }: Props) => {
   );
 
   useEffect(() => {
-    if (withAdminAuth) {
+    if (skip) {
+      return;
+    } else if (withAdminAuth) {
       fetchData(authApi);
     } else {
       fetchData(api);
     }
-  }, [method, path, body, fetchData, withAdminAuth, api, authApi]);
+  }, [method, path, body, fetchData, withAdminAuth, skip, api, authApi]);
 
   const refetch = () => {
     if (withAdminAuth) {

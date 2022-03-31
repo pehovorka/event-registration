@@ -61,6 +61,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         // Require admin auth for displaying registered users for an event.
         http.authorizeHttpRequests().antMatchers("/api/v1/events/*").authenticated();
+        http.authorizeHttpRequests().antMatchers("/api/v1/events/*/**").authenticated();
         http.authorizeHttpRequests().anyRequest().permitAll();
         http.addFilter(customAuthenticationFilter);
         http.addFilterBefore(new CustomAuthorizationFilter(environment), UsernamePasswordAuthenticationFilter.class);

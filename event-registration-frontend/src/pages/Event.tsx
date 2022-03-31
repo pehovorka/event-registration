@@ -10,7 +10,7 @@ import { Event as EventInterface } from "../interfaces";
 function Event() {
   const { id } = useParams();
 
-  const { data, loading, error } = useFetchData<EventInterface>({
+  const { data, loading, error, refetch } = useFetchData<EventInterface>({
     method: Methods.get,
     path: `${API_ROUTES.events}/${id}`,
     withAdminAuth: true,
@@ -24,7 +24,11 @@ function Event() {
         {data && (
           <>
             <EventDetails event={data} />
-            <RegistrationsList registrations={data.registrations || []} />
+            <RegistrationsList
+              eventId={data.id}
+              registrations={data.registrations || []}
+              validation={{ refetchEventAttendees: refetch }}
+            />
           </>
         )}
       </>

@@ -1,13 +1,22 @@
 import { Button, Card, Modal, Table } from "antd";
 import { ColumnsType } from "antd/lib/table";
-import { Registration } from "../../interfaces";
+import { Event, Registration } from "../../interfaces";
+import { ValidateUsersModal } from "../admin";
 import { UserInfo } from "../profile";
 
-type Props = {
+interface Props {
+  eventId: Event["id"];
   registrations: Registration[];
-};
+  title?: string;
+  validation?: { refetchEventAttendees: () => void };
+}
 
-function RegistrationsList({ registrations }: Props) {
+function RegistrationsList({
+  eventId,
+  registrations,
+  validation,
+  title,
+}: Props) {
   const columns: ColumnsType<object> = [
     {
       title: "Person",
@@ -48,20 +57,28 @@ function RegistrationsList({ registrations }: Props) {
 
   return (
     <Card
-      title={`Attendees (${registrations.length})`}
+      title={
+        title
+          ? `${title} (${registrations.length})`
+          : `Attendees (${registrations.length})`
+      }
       bordered={false}
       style={{ marginTop: "1rem" }}
       extra={
-        <Button disabled={registrations.length === 0}>
-          Validate attendees
-        </Button>
+        validation && (
+          <ValidateUsersModal
+            eventId={eventId}
+            disabled={registrations.length === 0}
+            refetchEventAttendees={validation.refetchEventAttendees}
+          />
+        )
       }
     >
       <Table
         columns={columns}
         dataSource={registrations}
         pagination={false}
-        rowKey="id"
+        rowKey={(row: Partial<Registration>) => row.user?.uid!}
       />
     </Card>
   );

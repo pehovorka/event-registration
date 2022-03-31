@@ -1,6 +1,5 @@
 package com.cscu9yw.eventregistrationbackend.controller;
 
-import com.cscu9yw.eventregistrationbackend.model.Event;
 import com.cscu9yw.eventregistrationbackend.model.EventRegistration;
 import com.cscu9yw.eventregistrationbackend.model.User;
 import com.cscu9yw.eventregistrationbackend.service.UserService;

@@ -9,7 +9,9 @@ function UserInfo({ user }: Props) {
     <PageHeader ghost={false} title={user.name} subTitle={user.uid}>
       <h3>Interests</h3>
       {user.interests?.length
-        ? user.interests.map((interest) => <Tag>{interest.name}</Tag>)
+        ? user.interests.map((interest) => (
+            <Tag key={interest.name}>{interest.name}</Tag>
+          ))
         : "No interests."}
       {user.registrations && (
         <>
