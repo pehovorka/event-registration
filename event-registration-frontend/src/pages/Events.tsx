@@ -1,4 +1,4 @@
-import { Alert } from "antd";
+import { Alert, Skeleton } from "antd";
 import { PageLayout } from "../components";
 import { EventsList } from "../components/events";
 import { API_ROUTES } from "../config/api";
@@ -20,7 +20,7 @@ function Events({ isAdmin }: Props) {
   return (
     <PageLayout title="Events">
       <>
-        {loading && !data && <p>Loading...</p>}
+        {loading && !data && <Skeleton />}
         {data && (
           <EventsList
             events={data}

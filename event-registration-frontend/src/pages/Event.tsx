@@ -1,4 +1,4 @@
-import { Alert } from "antd";
+import { Alert, Skeleton } from "antd";
 import { useParams } from "react-router-dom";
 import { PageLayout } from "../components";
 import { EventDetails, RegistrationsList } from "../components/events";
@@ -19,7 +19,7 @@ function Event() {
   return (
     <PageLayout title={"Event detail"}>
       <>
-        {loading && !data && <p>Loading...</p>}
+        {loading && !data && <Skeleton />}
         {error && <Alert type="error" message={`${error}`} />}
         {data && (
           <>
