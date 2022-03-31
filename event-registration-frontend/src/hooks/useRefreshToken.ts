@@ -1,3 +1,4 @@
+import { message } from "antd";
 import axios from "axios";
 import { API_BASE_URL, API_ROUTES } from "../config/api";
 import { AdminTokens } from "../interfaces";
@@ -29,6 +30,7 @@ const useRefreshToken = () => {
           error.response?.status === 401 &&
           error.response.data?.cause === "TOKEN_EXPIRED"
         ) {
+          message.error("Your session has expired, please log-in again.");
           dispatch({ type: "logout" });
         }
       }

@@ -1,4 +1,4 @@
-import { Table, Space, Button, Col, Row } from "antd";
+import { Table, Space, Button, Col, Row, message } from "antd";
 import { ColumnsType } from "antd/lib/table";
 import { useState } from "react";
 import { Link } from "react-router-dom";
@@ -55,7 +55,7 @@ function EventsList({ events, registrations, refetch, isAdmin }: Props) {
       title: "Action",
       key: "action",
       width: "13rem",
-      render: (text, record: any) => {
+      render: (text, record: Partial<Event>) => {
         if (
           registrations?.some(
             (registration) => registration.event.id === record.id
@@ -69,9 +69,10 @@ function EventsList({ events, registrations, refetch, isAdmin }: Props) {
                 loading={record.id === idLoading ? loading : false}
                 onClick={() => {
                   setIdLoading(record.id);
-                  deleteRegistration({ eventId: record.id }).then(
-                    () => refetch && refetch()
-                  );
+                  deleteRegistration({ eventId: record.id! }).then(() => {
+                    message.success("Registration was cancelled!");
+                    refetch && refetch();
+                  });
                 }}
               >
                 Cancel registration
@@ -92,9 +93,12 @@ function EventsList({ events, registrations, refetch, isAdmin }: Props) {
                 loading={record.id === idLoading ? loading : false}
                 onClick={() => {
                   setIdLoading(record.id);
-                  createRegistration({ eventId: record.id }).then(
-                    () => refetch && refetch()
-                  );
+                  createRegistration({ eventId: record.id! }).then(() => {
+                    message.success(
+                      `Successfully registered for ${record.name}!`
+                    );
+                    refetch && refetch();
+                  });
                 }}
               >
                 Register
