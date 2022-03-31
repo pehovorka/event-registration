@@ -19,7 +19,7 @@ function Event() {
   return (
     <PageLayout title={"Event detail"}>
       <>
-        {loading && <p>Loading...</p>}
+        {loading && !data && <p>Loading...</p>}
         {error && <Alert type="error" message={`${error}`} />}
         {data && (
           <>

@@ -22,6 +22,7 @@ public class Event {
 
     @OneToMany(mappedBy = "event")
     @JsonIgnoreProperties("event")
+    @OrderBy("registeredAt DESC")
     private Set<EventRegistration> registrations = new HashSet<>();
 
     public Event(String name, LocalDateTime date, int duration, int capacity) {
