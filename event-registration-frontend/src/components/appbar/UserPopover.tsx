@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Alert, Button, Input, Menu, Popover } from "antd";
+import { Alert, Button, Input, Menu, message, Popover } from "antd";
 import { useUser } from "../../providers/UserProvider";
 import { useUserLogin, useUserRegistration } from "../../hooks";
 import { Link } from "react-router-dom";
@@ -84,7 +84,10 @@ function UserPopover() {
                 </Menu.Item>
                 <Menu.Item
                   key="4"
-                  onClick={() => userDispatch({ type: "logout" })}
+                  onClick={() => {
+                    userDispatch({ type: "logout" });
+                    message.success("You were successfully logged out!");
+                  }}
                 >
                   Log out
                 </Menu.Item>

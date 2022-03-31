@@ -1,3 +1,4 @@
+import { message } from "antd";
 import axios from "axios";
 import { useState } from "react";
 import { API_BASE_URL, API_ROUTES } from "../config/api";
@@ -21,6 +22,7 @@ const useUserLogin = () => {
       setError(undefined);
       userContext.dispatch({ type: "login", data: response });
       localStorage.setItem("userUid", response.uid);
+      message.success(`Welcome back, ${response.name}!`);
     } catch (error) {
       setError(error);
       localStorage.removeItem("userUid");
