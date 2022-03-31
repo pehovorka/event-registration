@@ -27,9 +27,6 @@ function AppBar({ isAdminPath }: Props) {
           <Menu.Item key={route.events}>
             <NavLink to={route.events}>Events</NavLink>
           </Menu.Item>
-          <Menu.Item key={route.admin.login}>
-            <NavLink to={route.admin.login}>Administration</NavLink>
-          </Menu.Item>
           <UserPopover />
         </Menu>
       </Col>

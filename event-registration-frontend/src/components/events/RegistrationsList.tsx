@@ -44,7 +44,7 @@ function RegistrationsList({
       key: "name",
     },
     {
-      title: "Registered at",
+      title: "Registered for the event at",
       dataIndex: "registeredAt",
       key: "registeredAt",
       render: (value: Date) =>

@@ -1,4 +1,4 @@
-import { Button, Form, Input } from "antd";
+import { Button, Form, Input, Row } from "antd";
 import { useEffect, useState } from "react";
 import useAdminLogin from "../../hooks/useAdminLogin";
 import { useNavigate } from "react-router-dom";
@@ -28,40 +28,46 @@ function LoginForm() {
   }, [error, loading, navigate, data]);
 
   return (
-    <Form
-      name="basic"
-      labelAlign="left"
-      labelCol={{ span: 3 }}
-      wrapperCol={{ span: 10 }}
-      onFinish={onFinish}
-      autoComplete="off"
-    >
-      <Form.Item
-        label="Username"
-        name="username"
-        rules={[{ required: true, message: "Please input your username!" }]}
-        validateStatus={error ? "error" : ""}
-        help={errorMessage}
+    <Row justify="center">
+      <Form
+        style={{ width: "100%", maxWidth: "50rem" }}
+        name="basic"
+        labelAlign="left"
+        size="large"
+        labelCol={{ span: 3 }}
+        wrapperCol={{ span: "100%" }}
+        onFinish={onFinish}
+        autoComplete="off"
       >
-        <Input />
-      </Form.Item>
+        <Form.Item
+          label="Username"
+          name="username"
+          rules={[{ required: true, message: "Please input your username!" }]}
+          validateStatus={error ? "error" : ""}
+          help={errorMessage}
+        >
+          <Input />
+        </Form.Item>
 
-      <Form.Item
-        label="Password"
-        name="password"
-        rules={[{ required: true, message: "Please input your password!" }]}
-        validateStatus={error ? "error" : ""}
-        help={errorMessage}
-      >
-        <Input.Password />
-      </Form.Item>
+        <Form.Item
+          label="Password"
+          name="password"
+          rules={[{ required: true, message: "Please input your password!" }]}
+          validateStatus={error ? "error" : ""}
+          help={errorMessage}
+        >
+          <Input.Password />
+        </Form.Item>
 
-      <Form.Item wrapperCol={{ offset: 6, span: 3 }}>
-        <Button type="primary" htmlType="submit" style={{ width: "100%" }}>
-          Login
-        </Button>
-      </Form.Item>
-    </Form>
+        <Row justify="center">
+          <Form.Item>
+            <Button type="primary" htmlType="submit" style={{ width: "100%" }}>
+              Login
+            </Button>
+          </Form.Item>
+        </Row>
+      </Form>
+    </Row>
   );
 }
 

@@ -1,7 +1,8 @@
 import { Layout } from "antd";
+import { Footer as FooterContent } from "./footer";
 import { useLocation } from "react-router-dom";
 import { AppBar } from "./appbar";
-const { Header, Content } = Layout;
+const { Header, Content, Footer } = Layout;
 
 type Props = {
   children: JSX.Element;
@@ -23,7 +24,7 @@ function PageLayout({ children, title }: Props) {
       : "Event registration app";
   }
   return (
-    <Layout>
+    <Layout style={{ minHeight: "100vh" }}>
       <Header
         style={{ padding: 0, ...(!isAdminPath && { background: "#fff" }) }}
       >
@@ -38,6 +39,9 @@ function PageLayout({ children, title }: Props) {
         }
         style={{ padding: "1rem 3rem" }}
       />
+      <Footer>
+        <FooterContent isAdminPath={isAdminPath} />
+      </Footer>
     </Layout>
   );
 }

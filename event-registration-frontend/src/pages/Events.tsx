@@ -20,7 +20,7 @@ function Events({ isAdmin }: Props) {
   return (
     <PageLayout title="Events">
       <>
-        {loading && <p>Loading...</p>}
+        {loading && !data && <p>Loading...</p>}
         {data && (
           <EventsList
             events={data}
