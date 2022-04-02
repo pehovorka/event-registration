@@ -70,7 +70,6 @@ function EventsList({ events, registrations, refetch, isAdmin }: Props) {
                 onClick={() => {
                   setIdLoading(record.id);
                   deleteRegistration({ eventId: record.id! }).then(() => {
-                    message.success("Registration was cancelled!");
                     refetch && refetch();
                   });
                 }}
@@ -94,9 +93,6 @@ function EventsList({ events, registrations, refetch, isAdmin }: Props) {
                 onClick={() => {
                   setIdLoading(record.id);
                   createRegistration({ eventId: record.id! }).then(() => {
-                    message.success(
-                      `Successfully registered for ${record.name}!`
-                    );
                     refetch && refetch();
                   });
                 }}

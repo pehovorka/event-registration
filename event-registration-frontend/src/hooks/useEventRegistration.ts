@@ -1,4 +1,5 @@
 import axios from "axios";
+import { message } from "antd";
 import { useState } from "react";
 import { API_BASE_URL, API_ROUTES } from "../config/api";
 import { Event } from "../interfaces/Event";
@@ -39,8 +40,10 @@ const useEventRegistration = () => {
       setData(response);
       setError(undefined);
       dispatch({ type: "addEventRegistration", data: response });
+      message.success(`Successfully registered for ${response.event.name}!`);
     } catch (error) {
       setError(error);
+      message.error(`${error}`);
     }
     setLoading(false);
   };
@@ -68,8 +71,10 @@ const useEventRegistration = () => {
       setData(response);
       setError(undefined);
       dispatch({ type: "deleteEventRegistration", eventId: eventId });
-    } catch (error) {
-      setError(error);
+      message.success("Registration was cancelled!");
+    } catch (e) {
+      setError(e);
+      message.error(`${e}`);
     }
     setLoading(false);
   };

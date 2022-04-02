@@ -31,4 +31,12 @@ public class EventServiceImpl implements EventService {
     public void deleteEventById(Long id) {
         db.deleteById(id);
     }
+
+    public Event addEvent(Event event) {
+        return db.save(event);
+    }
+
+    public Event updateEvent(Event event) {
+        return db.save(event);
+    }
 }
