@@ -3,7 +3,7 @@ import { message } from "antd";
 import { useState } from "react";
 import { API_BASE_URL, API_ROUTES } from "../config/api";
 import { Event } from "../interfaces/Event";
-import { Registration } from "../interfaces/Registration";
+import { Registration, RegistrationKey } from "../interfaces/Registration";
 import { useUser } from "../providers/UserProvider";
 
 const useEventRegistration = () => {
@@ -17,16 +17,9 @@ const useEventRegistration = () => {
   }
 
   const createRegistration = async ({ eventId }: Props) => {
-    const body: {
-      user: Partial<Registration["user"]>;
-      event: Partial<Registration["event"]>;
-    } = {
-      user: {
-        uid: user?.uid ?? "",
-      },
-      event: {
-        id: eventId,
-      },
+    const body: RegistrationKey = {
+      userUid: user?.uid ?? "",
+      eventId: eventId,
     };
 
     setLoading(true);
@@ -49,16 +42,9 @@ const useEventRegistration = () => {
   };
 
   const deleteRegistration = async ({ eventId }: Props) => {
-    const body: {
-      user: Partial<Registration["user"]>;
-      event: Partial<Registration["event"]>;
-    } = {
-      user: {
-        uid: user?.uid ?? "",
-      },
-      event: {
-        id: eventId,
-      },
+    const body: RegistrationKey = {
+      userUid: user?.uid ?? "",
+      eventId: eventId,
     };
 
     setLoading(true);

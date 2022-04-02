@@ -79,6 +79,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // Enable access to refresh token EP for anybody (the refresh token is validated in AdminController).
         http.authorizeHttpRequests().antMatchers(HttpMethod.GET, "/admin/token/refresh").permitAll();
 
+        // Enable access to API docs to anybody
+        http.authorizeHttpRequests().antMatchers(HttpMethod.GET, "/swagger-ui/**").permitAll();
+        http.authorizeHttpRequests().antMatchers(HttpMethod.GET, "/api-docs/**").permitAll();
+
         // Allow everything else only for administrators.
         http.authorizeHttpRequests().anyRequest().authenticated();
 

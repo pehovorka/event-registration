@@ -1,6 +1,7 @@
 package com.cscu9yw.eventregistrationbackend.controller;
 
 import com.cscu9yw.eventregistrationbackend.model.EventRegistration;
+import com.cscu9yw.eventregistrationbackend.model.EventRegistrationKey;
 import com.cscu9yw.eventregistrationbackend.service.EventRegistrationService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,10 +20,11 @@ public class EventRegistrationController {
     }
 
     @PostMapping()
-    public ResponseEntity<EventRegistration> register(@RequestBody EventRegistration registrationRequest,
-                                                      @RequestHeader("X-User-Uid") String userUidHeader) {
-        Long eventId = registrationRequest.getEvent().getId();
-        String userUid = registrationRequest.getUser().getUid();
+    public ResponseEntity<EventRegistration> register(
+            @RequestBody EventRegistrationKey registrationRequest,
+            @RequestHeader("X-User-Uid") String userUidHeader) {
+        Long eventId = registrationRequest.getEventId();
+        String userUid = registrationRequest.getUserUid();
 
         if (!userUid.equals(userUidHeader))
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
@@ -50,10 +52,10 @@ public class EventRegistrationController {
     }
 
     @DeleteMapping()
-    public void deleteRegistration(@RequestBody EventRegistration registrationRequest,
+    public void deleteRegistration(@RequestBody EventRegistrationKey registrationRequest,
                                    @RequestHeader("X-User-Uid") String userUidHeader) {
-        Long eventId = registrationRequest.getEvent().getId();
-        String userUid = registrationRequest.getUser().getUid();
+        Long eventId = registrationRequest.getEventId();
+        String userUid = registrationRequest.getUserUid();
 
         if (!userUid.equals(userUidHeader))
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
