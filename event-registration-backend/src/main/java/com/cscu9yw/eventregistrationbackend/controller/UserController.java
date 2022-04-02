@@ -12,7 +12,7 @@ import java.net.URI;
 import java.util.Set;
 
 @RestController
-@RequestMapping("/api/v1/users")
+@RequestMapping("/users")
 public class UserController {
     private final UserService us;
 

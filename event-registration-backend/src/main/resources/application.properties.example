@@ -5,3 +5,4 @@ security.secret=
 admin.username=
 admin.password=
 spring.jackson.mapper.default-view-inclusion=true
+server.servlet.contextPath=/api/v1/

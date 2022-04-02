@@ -52,7 +52,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(authenticationManagerBean(), environment);
         // Change the URL of the admin login endpoint from default '/login'.
-        customAuthenticationFilter.setFilterProcessesUrl("/api/v1/admin/login");
+        customAuthenticationFilter.setFilterProcessesUrl("/admin/login");
 
         // Our sessions are stateless, we use JWT. For that reason, CSRF is disabled.
         http.csrf().disable();
@@ -64,20 +64,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
         // Allow listing events for anybody.
-        http.authorizeHttpRequests().antMatchers(HttpMethod.GET, "/api/v1/events").permitAll();
+        http.authorizeHttpRequests().antMatchers(HttpMethod.GET, "/events").permitAll();
 
         // Allow registering random user (attendee) for anybody.
-        http.authorizeHttpRequests().antMatchers(HttpMethod.POST, "/api/v1/users").permitAll();
+        http.authorizeHttpRequests().antMatchers(HttpMethod.POST, "/users").permitAll();
 
         // Allow requesting user (attendee) data for anybody (they need to know the user UID).
-        http.authorizeHttpRequests().antMatchers(HttpMethod.GET, "/api/v1/users/*").permitAll();
+        http.authorizeHttpRequests().antMatchers(HttpMethod.GET, "/users/*").permitAll();
 
         // Allow creating and deleting registrations for anybody (they need to know the user UID).
-        http.authorizeHttpRequests().antMatchers(HttpMethod.POST, "/api/v1/registrations").permitAll();
-        http.authorizeHttpRequests().antMatchers(HttpMethod.DELETE, "/api/v1/registrations").permitAll();
+        http.authorizeHttpRequests().antMatchers(HttpMethod.POST, "/registrations").permitAll();
+        http.authorizeHttpRequests().antMatchers(HttpMethod.DELETE, "/registrations").permitAll();
 
         // Enable access to refresh token EP for anybody (the refresh token is validated in AdminController).
-        http.authorizeHttpRequests().antMatchers(HttpMethod.GET, "/api/v1/admin/token/refresh").permitAll();
+        http.authorizeHttpRequests().antMatchers(HttpMethod.GET, "/admin/token/refresh").permitAll();
 
         // Allow everything else only for administrators.
         http.authorizeHttpRequests().anyRequest().authenticated();
