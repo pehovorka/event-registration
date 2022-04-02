@@ -14,6 +14,7 @@ function Events({ isAdmin }: Props) {
   const { data, loading, error, refetch } = useFetchData<Event[]>({
     method: Methods.get,
     path: API_ROUTES.events,
+    ...(isAdmin && { withAdminAuth: true }),
   });
 
   const { state: user } = useUser();

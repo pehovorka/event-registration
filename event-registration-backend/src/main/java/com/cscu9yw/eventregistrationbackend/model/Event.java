@@ -1,9 +1,7 @@
 package com.cscu9yw.eventregistrationbackend.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
-import org.springframework.beans.factory.annotation.Value;
+import com.cscu9yw.eventregistrationbackend.view.View;
+import com.fasterxml.jackson.annotation.JsonView;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -20,8 +18,9 @@ public class Event {
     private int duration;
     private int capacity;
 
+    // Registrations array is available only for authenticated users – admins.
+    @JsonView(View.Admin.class)
     @OneToMany(mappedBy = "event")
-    @JsonIgnoreProperties("event")
     @OrderBy("registeredAt DESC")
     private Set<EventRegistration> registrations = new HashSet<>();
 

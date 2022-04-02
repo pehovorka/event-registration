@@ -1,9 +1,7 @@
 spring.datasource.url=jdbc:h2:mem:event_registration
 spring.datasource.username=
 spring.datasource.password=
-spring.h2.console.enabled=true
-server.error.include-message=always
-logging.level.web=debug
 security.secret=
 admin.username=
 admin.password=
+spring.jackson.mapper.default-view-inclusion=true
