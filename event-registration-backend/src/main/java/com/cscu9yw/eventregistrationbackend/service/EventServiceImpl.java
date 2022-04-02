@@ -28,5 +28,7 @@ public class EventServiceImpl implements EventService {
         return db.existsById(id);
     }
 
-
+    public void deleteEventById(Long id) {
+        db.deleteById(id);
+    }
 }

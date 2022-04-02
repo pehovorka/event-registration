@@ -35,6 +35,15 @@ public class EventController {
 
     }
 
+    @DeleteMapping("/{id}")
+    public void deleteEventById(@PathVariable Long id) {
+        if (eventService.eventExists(id)){
+            eventService.deleteEventById(id);
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+    }
+
     @PostMapping("/{id}/validate-users")
     public ValidationResult validateUsers(@PathVariable Long id) {
         Event event = eventService.
