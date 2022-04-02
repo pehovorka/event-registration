@@ -38,8 +38,15 @@ public class EventRegistrationController {
 
         EventRegistration registration = ers.register(eventId, userUid);
 
-        URI location = URI.create("/api/v1/registrations/" + registration.getId());
+        URI location = URI.create("/api/v1/registrations/" + registration.getUser().getUid() + "/" + registration.getEvent().getId());
         return ResponseEntity.created(location).body(registration);
+    }
+
+    @GetMapping("/{userUid}/{eventId}")
+    public EventRegistration getRegistration(@PathVariable Long eventId, @PathVariable String userUid) {
+
+        return ers.getRegistrationById(eventId, userUid)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
     @DeleteMapping()

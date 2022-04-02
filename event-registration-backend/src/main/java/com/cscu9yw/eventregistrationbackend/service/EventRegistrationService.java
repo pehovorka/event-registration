@@ -4,6 +4,8 @@ import com.cscu9yw.eventregistrationbackend.model.Event;
 import com.cscu9yw.eventregistrationbackend.model.EventRegistration;
 import com.cscu9yw.eventregistrationbackend.model.ValidationResult;
 
+import java.util.Optional;
+
 
 public interface EventRegistrationService {
     EventRegistration register(Long eventId, String userUid);
@@ -17,6 +19,8 @@ public interface EventRegistrationService {
     boolean registrationExists(String userUid, Long eventId);
 
     boolean eventIsFull(Long eventId);
+
+    Optional<EventRegistration> getRegistrationById(Long eventId, String userUid);
 
     ValidationResult validateUsers(Event event);
 }

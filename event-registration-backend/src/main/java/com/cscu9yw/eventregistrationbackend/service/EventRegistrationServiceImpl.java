@@ -21,6 +21,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 
@@ -78,6 +79,12 @@ public class EventRegistrationServiceImpl implements EventRegistrationService {
                 .map((event) -> event.getRegistered() == event.getCapacity())
                 .orElseThrow(() -> new EntityNotFoundException("Event with id: " + eventId + " not found!"));
     }
+
+    public Optional<EventRegistration> getRegistrationById(Long eventId, String userUid){
+        EventRegistrationKey key = new EventRegistrationKey(userUid, eventId);
+        return eventRegistrationRepository.findEventRegistrationById(key);
+    };
+
 
 
     @Bean
