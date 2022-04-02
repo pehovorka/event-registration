@@ -1,9 +1,14 @@
-import { Button, Descriptions, PageHeader } from "antd";
+import { Button, Descriptions, Modal, PageHeader } from "antd";
+import { useNavigate } from "react-router-dom";
+import { useEventActions } from "../../hooks";
 import { Event } from "../../interfaces";
+import { route } from "../../Routes";
 
 type Props = { event: Event };
 
 function EventDetails({ event }: Props) {
+  const { deleteEvent } = useEventActions();
+  const navigate = useNavigate();
   return (
     <PageHeader
       ghost={false}
@@ -15,8 +20,32 @@ function EventDetails({ event }: Props) {
       })}
       extra={
         <>
-          <Button>Edit</Button>
-          <Button danger>Delete</Button>
+          <Button
+            onClick={() => navigate(`${route.admin.events}/${event.id}/edit`)}
+          >
+            Edit
+          </Button>
+          <Button
+            danger
+            onClick={() => {
+              Modal.confirm({
+                title: event.name,
+                content: (
+                  <p>
+                    Are you sure you want to delete the event? All registrations
+                    will be cancelled!
+                  </p>
+                ),
+                type: "warn",
+                onOk: () =>
+                  deleteEvent(event.id!).then(() =>
+                    navigate(route.admin.events)
+                  ),
+              });
+            }}
+          >
+            Delete
+          </Button>
         </>
       }
     >

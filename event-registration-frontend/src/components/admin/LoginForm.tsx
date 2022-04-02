@@ -1,6 +1,6 @@
 import { Button, Card, Form, Input, message, Row } from "antd";
 import { useEffect, useState } from "react";
-import useAdminLogin from "../../hooks/useAdminLogin";
+import { useAdminLogin } from "../../hooks";
 import { useNavigate } from "react-router-dom";
 import { route } from "../../Routes";
 import jwtDecode, { JwtPayload } from "jwt-decode";

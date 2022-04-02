@@ -1,10 +1,13 @@
-import { Alert, Skeleton } from "antd";
+import { PlusCircleOutlined } from "@ant-design/icons";
+import { Alert, Button, Skeleton } from "antd";
+import { useNavigate } from "react-router-dom";
 import { PageLayout } from "../components";
 import { EventsList } from "../components/events";
 import { API_ROUTES } from "../config/api";
 import useFetchData, { Methods } from "../hooks/useFetchData";
 import { Event } from "../interfaces/Event";
 import { useUser } from "../providers/UserProvider";
+import { route } from "../Routes";
 
 interface Props {
   isAdmin?: boolean;
@@ -18,8 +21,25 @@ function Events({ isAdmin }: Props) {
   });
 
   const { state: user } = useUser();
+  const navigate = useNavigate();
+
   return (
-    <PageLayout title="Events">
+    <PageLayout
+      title="Events"
+      titleExtra={
+        isAdmin ? (
+          <Button
+            icon={<PlusCircleOutlined />}
+            type="primary"
+            onClick={() => navigate(route.admin.createEvent)}
+          >
+            Create new
+          </Button>
+        ) : (
+          <></>
+        )
+      }
+    >
       <>
         {loading && !data && <Skeleton />}
         {data && (

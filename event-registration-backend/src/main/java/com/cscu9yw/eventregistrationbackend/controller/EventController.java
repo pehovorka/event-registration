@@ -46,7 +46,7 @@ public class EventController {
                     event.setName(eventRequest.getName());
                     event.setCapacity(eventRequest.getCapacity());
                     event.setDate(eventRequest.getDate());
-                    event.setCapacity(eventRequest.getCapacity());
+                    event.setDuration(eventRequest.getDuration());
                     return eventService.updateEvent(event);
                 }).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 

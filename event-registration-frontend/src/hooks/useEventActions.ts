@@ -17,7 +17,35 @@ const useEventActions = () => {
     }
   };
 
-  return { deleteEvent };
+  const editEvent = async (event: Partial<Event>) => {
+    try {
+      const { data } = await authApi.put<Event>(
+        `${API_BASE_URL}${API_ROUTES.events}/${event.id}`,
+        event
+      );
+      message.success(`${event.name} was updated!`);
+      return data;
+    } catch (error) {
+      message.error(`${error}`);
+      throw error;
+    }
+  };
+
+  const createEvent = async (event: Partial<Event>) => {
+    try {
+      const { data } = await authApi.post<Event>(
+        `${API_BASE_URL}${API_ROUTES.events}`,
+        event
+      );
+      message.success(`${event.name} was created!`);
+      return data;
+    } catch (error) {
+      message.error(`${error}`);
+      throw error;
+    }
+  };
+
+  return { deleteEvent, editEvent, createEvent };
 };
 
 export default useEventActions;

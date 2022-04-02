@@ -1,9 +1,8 @@
 import { Table, Space, Button, Col, Row, Modal } from "antd";
 import { ColumnsType } from "antd/lib/table";
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import { useEventRegistration } from "../../hooks/";
-import useEventActions from "../../hooks/useEventActions";
+import { Link, useNavigate } from "react-router-dom";
+import { useEventRegistration, useEventActions } from "../../hooks/";
 import { Event, Registration } from "../../interfaces";
 
 interface Props {
@@ -14,6 +13,7 @@ interface Props {
 }
 
 function EventsList({ events, registrations, refetch, isAdmin }: Props) {
+  const navigate = useNavigate();
   const { createRegistration, deleteRegistration, loading } =
     useEventRegistration();
   const { deleteEvent } = useEventActions();
@@ -111,11 +111,14 @@ function EventsList({ events, registrations, refetch, isAdmin }: Props) {
       title: "Action",
       key: "action",
       width: "13rem",
-      render: (text, record: any) => (
+      render: (text, record: Partial<Event>) => (
         <Row gutter={8}>
           <Col>
             <Space size="middle">
-              <Button type="default" onClick={() => {}}>
+              <Button
+                type="default"
+                onClick={() => navigate(`${record.id}/edit`)}
+              >
                 Edit
               </Button>
             </Space>
@@ -136,7 +139,7 @@ function EventsList({ events, registrations, refetch, isAdmin }: Props) {
                     ),
                     type: "warn",
                     onOk: () =>
-                      deleteEvent(record.id).then(() => refetch && refetch()),
+                      deleteEvent(record.id!).then(() => refetch && refetch()),
                   });
                 }}
               >
