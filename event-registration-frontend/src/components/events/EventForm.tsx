@@ -1,4 +1,13 @@
-import { Button, Card, DatePicker, Form, Input, InputNumber } from "antd";
+import {
+  Button,
+  Card,
+  Col,
+  DatePicker,
+  Form,
+  Input,
+  InputNumber,
+  Row,
+} from "antd";
 import moment, { Moment } from "moment";
 import { useNavigate } from "react-router-dom";
 import { useEventActions } from "../../hooks";
@@ -48,6 +57,7 @@ function EventForm({ initialState }: Props) {
         layout="horizontal"
         initialValues={initialState}
         onFinish={onFinish}
+        style={{ width: "100%" }}
       >
         <Form.Item
           label="Name"
@@ -83,9 +93,14 @@ function EventForm({ initialState }: Props) {
           <InputNumber min={initialState?.registered} />
         </Form.Item>
         <Form.Item>
-          <Button type="primary" htmlType="submit">
-            {initialState ? "Save changes" : "Create event"}
-          </Button>
+          <Row>
+            <Col span={9} />
+            <Col>
+              <Button type="primary" htmlType="submit">
+                {initialState ? "Save changes" : "Create event"}
+              </Button>
+            </Col>
+          </Row>
         </Form.Item>
       </Form>
     </Card>
