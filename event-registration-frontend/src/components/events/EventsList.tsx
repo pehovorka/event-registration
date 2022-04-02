@@ -1,8 +1,9 @@
-import { Table, Space, Button, Col, Row, message } from "antd";
+import { Table, Space, Button, Col, Row, Modal } from "antd";
 import { ColumnsType } from "antd/lib/table";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useEventRegistration } from "../../hooks/";
+import useEventActions from "../../hooks/useEventActions";
 import { Event, Registration } from "../../interfaces";
 
 interface Props {
@@ -15,6 +16,7 @@ interface Props {
 function EventsList({ events, registrations, refetch, isAdmin }: Props) {
   const { createRegistration, deleteRegistration, loading } =
     useEventRegistration();
+  const { deleteEvent } = useEventActions();
   const [idLoading, setIdLoading] = useState<Event["id"]>();
 
   const columns: ColumnsType<object> = [
@@ -120,7 +122,24 @@ function EventsList({ events, registrations, refetch, isAdmin }: Props) {
           </Col>
           <Col>
             <Space size="middle">
-              <Button type="default" danger onClick={() => {}}>
+              <Button
+                type="default"
+                danger
+                onClick={() => {
+                  Modal.confirm({
+                    title: record.name,
+                    content: (
+                      <p>
+                        Are you sure you want to delete the event? All
+                        registrations will be cancelled!
+                      </p>
+                    ),
+                    type: "warn",
+                    onOk: () =>
+                      deleteEvent(record.id).then(() => refetch && refetch()),
+                  });
+                }}
+              >
                 Delete
               </Button>
             </Space>

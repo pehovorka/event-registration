@@ -11,4 +11,5 @@ public interface EventRegistrationRepository extends CrudRepository<EventRegistr
     boolean existsById(EventRegistrationKey key);
     void deleteById(EventRegistrationKey key);
     Optional<EventRegistration> findEventRegistrationById(EventRegistrationKey key);
+    void deleteAllByEvent_Id(Long eventId);
 }
