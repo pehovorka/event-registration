@@ -40,11 +40,12 @@ public class EventRegistrationBackendApplication {
     @Bean
     CommandLineRunner initDB(EventRepository eventRepository, AdminService adminService) {
         return (args) -> {
-            eventRepository.save(new Event("First Event", LocalDateTime.parse("2022-04-01T10:00:00"), 60, 5));
-            eventRepository.save(new Event("Second Event", LocalDateTime.parse("2022-04-02T12:45:00"), 90, 2));
-            eventRepository.save(new Event("Third Event", LocalDateTime.parse("2022-04-03T08:30:00"), 120, 8));
-            eventRepository.save(new Event("Spring Boot for n00bs", LocalDateTime.parse("2022-04-02T10:00:00"), 240, 10));
-            eventRepository.save(new Event("What's new in Next.js 12", LocalDateTime.parse("2022-04-06T10:00:00"), 120, 50));
+            eventRepository.save(new Event("What's the deal with SvelteKit?", LocalDateTime.parse("2022-04-14T10:00:00"), 120, 30));
+            eventRepository.save(new Event("Introduction to serverless", LocalDateTime.parse("2022-04-11T12:45:00"), 90, 10));
+            eventRepository.save(new Event("Performance testing meetup", LocalDateTime.parse("2022-04-29T16:30:00"), 300, 50));
+            eventRepository.save(new Event("Spring Boot for beginners 1", LocalDateTime.parse("2022-04-13T10:00:00"), 240, 5));
+            eventRepository.save(new Event("Spring Boot for beginners 2", LocalDateTime.parse("2022-04-20T10:00:00"), 240, 5));
+            eventRepository.save(new Event("What's new in Next.js 12", LocalDateTime.parse("2022-04-12T10:00:00"), 120, 30));
             adminService.saveAdmin(new Admin(environment.getProperty("admin.username"), environment.getProperty("admin.password")));
         };
     }
