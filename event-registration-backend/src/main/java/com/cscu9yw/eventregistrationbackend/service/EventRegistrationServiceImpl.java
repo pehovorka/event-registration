@@ -46,9 +46,7 @@ public class EventRegistrationServiceImpl implements EventRegistrationService {
                 .findByUid(userUid)
                 .orElseThrow(() -> new EntityNotFoundException("User not found: " + userUid));
 
-        EventRegistration registration = eventRegistrationRepository.save(new EventRegistration(user, event, LocalDateTime.now()));
-        eventRepository.save(event);
-        return registration;
+        return eventRegistrationRepository.save(new EventRegistration(user, event, LocalDateTime.now()));
     }
 
     @Transactional
@@ -80,11 +78,12 @@ public class EventRegistrationServiceImpl implements EventRegistrationService {
                 .orElseThrow(() -> new EntityNotFoundException("Event with id: " + eventId + " not found!"));
     }
 
-    public Optional<EventRegistration> getRegistrationById(Long eventId, String userUid){
+    public Optional<EventRegistration> getRegistrationById(Long eventId, String userUid) {
         EventRegistrationKey key = new EventRegistrationKey(userUid, eventId);
         return eventRegistrationRepository.findEventRegistrationById(key);
-    };
+    }
 
+    ;
 
 
     @Bean
