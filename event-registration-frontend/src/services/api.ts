@@ -3,6 +3,7 @@ import { useMemo } from "react";
 import { API_BASE_URL } from "../config/api";
 import { useRefreshToken } from "../hooks";
 import { useAdmin } from "../providers/AdminProvider";
+import { handleDates } from "../utils/handleDates";
 
 export const useApi = () => {
   const { state } = useAdmin();
@@ -41,6 +42,8 @@ export const useApi = () => {
     () =>
       authApi.interceptors.response.use(
         (response) => {
+          // Automatically parse string dates to Date
+          handleDates(response.data);
           return response;
         },
         async (error) => {
@@ -82,6 +85,22 @@ export const useApi = () => {
       }),
     []
   );
+
+  useMemo(
+    () =>
+      api.interceptors.response.use((response) => {
+        // Automatically parse string dates to Date
+        handleDates(response.data);
+        return response;
+      }),
+    [api.interceptors.response]
+  );
+
+  axios.interceptors.response.use((response) => {
+    // Automatically parse string dates to Date for generic Axios instance
+    handleDates(response.data);
+    return response;
+  });
 
   return { api, authApi };
 };

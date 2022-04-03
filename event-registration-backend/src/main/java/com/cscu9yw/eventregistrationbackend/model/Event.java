@@ -2,9 +2,11 @@ package com.cscu9yw.eventregistrationbackend.model;
 
 import com.cscu9yw.eventregistrationbackend.view.View;
 import com.fasterxml.jackson.annotation.JsonView;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,7 +16,8 @@ public class Event {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
-    private LocalDateTime date;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    private ZonedDateTime date;
     private int duration;
     private int capacity;
 
@@ -24,7 +27,7 @@ public class Event {
     @OrderBy("registeredAt DESC")
     private Set<EventRegistration> registrations = new HashSet<>();
 
-    public Event(String name, LocalDateTime date, int duration, int capacity) {
+    public Event(String name, ZonedDateTime date, int duration, int capacity) {
         this.name = name;
         this.date = date;
         this.duration = duration;
@@ -46,11 +49,11 @@ public class Event {
         this.name = name;
     }
 
-    public LocalDateTime getDate() {
+    public ZonedDateTime getDate() {
         return date;
     }
 
-    public void setDate(LocalDateTime date) {
+    public void setDate(ZonedDateTime date) {
         this.date = date;
     }
 

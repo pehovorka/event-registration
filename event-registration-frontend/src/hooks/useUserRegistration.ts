@@ -1,12 +1,13 @@
 import { message } from "antd";
-import axios from "axios";
 import { useState } from "react";
 import { API_BASE_URL, API_ROUTES } from "../config/api";
 import { User } from "../interfaces/User";
 import { useUser } from "../providers/UserProvider";
+import { useApi } from "../services/api";
 
 const useUserRegistration = () => {
   const userContext = useUser();
+  const { api } = useApi();
   const [data, setData] = useState<User>();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<unknown | null>(null);
@@ -14,7 +15,7 @@ const useUserRegistration = () => {
   const register = async () => {
     setLoading(true);
     try {
-      const { data: response } = await axios.post<User>(
+      const { data: response } = await api.post<User>(
         `${API_BASE_URL}${API_ROUTES.users}`
       );
       setData(response);

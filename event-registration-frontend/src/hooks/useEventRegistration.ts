@@ -1,13 +1,14 @@
-import axios from "axios";
 import { message } from "antd";
 import { useState } from "react";
 import { API_BASE_URL, API_ROUTES } from "../config/api";
 import { Event } from "../interfaces/Event";
 import { Registration, RegistrationKey } from "../interfaces/Registration";
 import { useUser } from "../providers/UserProvider";
+import { useApi } from "../services/api";
 
 const useEventRegistration = () => {
   const { state: user, dispatch } = useUser();
+  const { api } = useApi();
   const [data, setData] = useState<Registration>();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<unknown | null>(null);
@@ -25,7 +26,7 @@ const useEventRegistration = () => {
     setLoading(true);
     setError(undefined);
     try {
-      const { data: response } = await axios.post<Registration>(
+      const { data: response } = await api.post<Registration>(
         API_BASE_URL + API_ROUTES.registrations,
         body,
         { headers: { "X-User-Uid": user?.uid ?? "" } }
@@ -50,7 +51,7 @@ const useEventRegistration = () => {
     setLoading(true);
     setError(undefined);
     try {
-      const { data: response } = await axios.delete<Registration>(
+      const { data: response } = await api.delete<Registration>(
         API_BASE_URL + API_ROUTES.registrations,
         { headers: { "X-User-Uid": user?.uid ?? "" }, data: body }
       );

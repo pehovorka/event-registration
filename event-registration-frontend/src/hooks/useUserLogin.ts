@@ -1,11 +1,12 @@
-import axios from "axios";
 import { useCallback, useState } from "react";
 import { API_BASE_URL, API_ROUTES } from "../config/api";
 import { User } from "../interfaces/User";
 import { useUser } from "../providers/UserProvider";
+import { useApi } from "../services/api";
 
 const useUserLogin = () => {
   const { dispatch, state } = useUser();
+  const { api } = useApi();
   const [data, setData] = useState<User>();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<unknown | null>(null);
@@ -14,7 +15,7 @@ const useUserLogin = () => {
     async (userUid: string) => {
       setLoading(true);
       try {
-        const { data: response } = await axios.get<User>(
+        const { data: response } = await api.get<User>(
           `${API_BASE_URL}${API_ROUTES.users}/${userUid}`,
           { headers: { "X-User-Uid": userUid } }
         );
@@ -30,7 +31,7 @@ const useUserLogin = () => {
         localStorage.removeItem("userUid");
       }
     },
-    [dispatch]
+    [dispatch, api]
   );
 
   const refetch = useCallback(() => {

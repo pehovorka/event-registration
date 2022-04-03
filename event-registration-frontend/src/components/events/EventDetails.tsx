@@ -14,7 +14,7 @@ function EventDetails({ event }: Props) {
       ghost={false}
       title={event.name}
       onBack={() => window.history.back()}
-      subTitle={new Date(event.date).toLocaleString("en-GB", {
+      subTitle={event.date.toLocaleString("en-GB", {
         dateStyle: "full",
         timeStyle: "short",
       })}

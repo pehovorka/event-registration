@@ -48,7 +48,7 @@ function RegistrationsList({
       dataIndex: "registeredAt",
       key: "registeredAt",
       render: (value: Date) =>
-        new Date(value).toLocaleString("en-GB", {
+        value.toLocaleString("en-GB", {
           dateStyle: "medium",
           timeStyle: "medium",
         }),

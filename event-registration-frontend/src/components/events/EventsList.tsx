@@ -32,7 +32,7 @@ function EventsList({ events, registrations, refetch, isAdmin }: Props) {
       dataIndex: "date",
       key: "date",
       render: (date) =>
-        new Date(date).toLocaleString("en-GB", {
+        date.toLocaleString("en-GB", {
           dateStyle: "long",
           timeStyle: "short",
         }),

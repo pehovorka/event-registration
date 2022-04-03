@@ -3,9 +3,11 @@ import { useState } from "react";
 import { API_BASE_URL, API_ROUTES } from "../config/api";
 import { AdminTokens } from "../interfaces";
 import { useAdmin } from "../providers/AdminProvider";
+import { useApi } from "../services/api";
 
 const useAdminLogin = () => {
   const adminContext = useAdmin();
+  const { api } = useApi();
   const [data, setData] = useState<AdminTokens>();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<AxiosError | undefined>(undefined);
@@ -13,7 +15,7 @@ const useAdminLogin = () => {
   const login = async (username: string, password: string) => {
     setLoading(true);
     try {
-      const { data: response } = await axios.post<AdminTokens>(
+      const { data: response } = await api.post<AdminTokens>(
         `${API_BASE_URL}${API_ROUTES.admin.login}`,
         {
           username: username,

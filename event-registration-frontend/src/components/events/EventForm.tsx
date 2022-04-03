@@ -28,6 +28,7 @@ function EventForm({ initialState }: Props) {
 
   if (initialState) {
     initialState.momentDate = moment(initialState.date);
+    console.log(initialState);
   }
 
   const onFinish = (values: Partial<EventWithMomentDate>) => {
@@ -38,6 +39,7 @@ function EventForm({ initialState }: Props) {
       duration: values.duration,
       capacity: values.capacity,
     };
+    console.log(eventValues);
     if (initialState) {
       editEvent(eventValues).then((data) => {
         navigate(`${route.admin.events}/${data.id}`);
