@@ -48,7 +48,13 @@ function UserPopover() {
                         />
                         <Button
                           type="primary"
-                          onClick={() => login(uidInput)}
+                          onClick={() =>
+                            login(uidInput).then((response) =>
+                              message.success(
+                                `Welcome back, ${response?.name}!`
+                              )
+                            )
+                          }
                           loading={loginLoading}
                           disabled={!uidInput.length}
                         >
