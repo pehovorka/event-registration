@@ -2,11 +2,22 @@ package com.cscu9yw.eventregistrationbackend.controller;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.exceptions.TokenExpiredException;
+import com.cscu9yw.eventregistrationbackend.model.AuthException;
+import com.cscu9yw.eventregistrationbackend.model.JWTTokens;
+import com.cscu9yw.eventregistrationbackend.model.UsernamePasswordRequest;
 import com.cscu9yw.eventregistrationbackend.service.AdminService;
 import com.cscu9yw.eventregistrationbackend.utils.JWTTokenValidator;
 import com.cscu9yw.eventregistrationbackend.utils.OtherAuthExceptionHandler;
 import com.cscu9yw.eventregistrationbackend.utils.TokenExpiredAuthExceptionHandler;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,14 +26,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
-import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
 @RequestMapping("/admin")
+@Tag(name = "Admin")
 public class AdminController {
 
     private final AdminService adminService;
@@ -33,15 +42,37 @@ public class AdminController {
         this.environment = environment;
     }
 
+    @PostMapping("/login")
+    @Operation(summary = "Log-in a user")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successful operation"),
+            @ApiResponse(responseCode = "401", description = "username or password is incorrect",
+                    content = @Content(schema = @Schema(hidden = true)))
+    })
+    public JWTTokens login(@RequestBody UsernamePasswordRequest request) {
+        // This method is only for API documentation, Spring Security intercepts POST /login and does verification.
+        throw new NotImplementedException();
+    }
+
+
     @GetMapping("/token/refresh")
-    public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String authorizationHeader = request.getHeader(AUTHORIZATION);
+    @Operation(summary = "Get a new access token")
+    @SecurityRequirement(name = "bearerAuth")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successful operation"),
+            @ApiResponse(responseCode = "401", description = "refresh token is expired",
+                    content = @Content(schema = @Schema(allOf = AuthException.class))),
+    })
+    public JWTTokens refreshToken(@Parameter(description = "refresh token") @RequestHeader(AUTHORIZATION) String authorizationHeader,
+                                  HttpServletRequest request,
+                                  HttpServletResponse response)
+            throws IOException, TokenExpiredAuthExceptionHandler, OtherAuthExceptionHandler {
 
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             // API path is not admin login EP, authorization header is present and starts with 'Bearer ' substring.
             try {
                 // Verify refresh token validity and initiate a new authentication token.
-                JWTTokenValidator validator = new JWTTokenValidator(authorizationHeader,environment, adminService);
+                JWTTokenValidator validator = new JWTTokenValidator(authorizationHeader, environment, adminService);
 
                 // Generate new JWT access token.
                 String accessToken = JWT.create()
@@ -50,20 +81,15 @@ public class AdminController {
                         .withIssuer(request.getRequestURL().toString()) // Refresh token EP path
                         .sign(validator.getAlgorithm());
 
-                // Put tokens to HashMap in order to return them as JSON response.
-                Map<String, String> tokens = new HashMap<>();
-                tokens.put("accessToken", accessToken);
-                tokens.put("refreshToken", validator.getToken());
-                response.setContentType(APPLICATION_JSON_VALUE);
-                new ObjectMapper().writeValue(response.getOutputStream(), tokens);
+                return new JWTTokens(accessToken, validator.getToken());
 
             } catch (TokenExpiredException exception) {
                 // Handle expired tokens
-                new TokenExpiredAuthExceptionHandler(exception.getMessage(), response);
+                throw new TokenExpiredAuthExceptionHandler(exception.getMessage(), response);
 
             } catch (Exception exception) {
                 // Handle other errors
-                new OtherAuthExceptionHandler(exception.getMessage(), response);
+                throw new OtherAuthExceptionHandler(exception.getMessage(), response);
             }
         } else {
             // API path is not login EP, authorization header is not present or doesn't start with 'Bearer ' substring.

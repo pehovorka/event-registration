@@ -64,7 +64,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
         // Allow listing events for anybody.
-        http.authorizeHttpRequests().antMatchers(HttpMethod.GET, "/events").permitAll();
+        http.authorizeHttpRequests().antMatchers(HttpMethod.GET, "/events/**").permitAll();
 
         // Allow registering random user (attendee) for anybody.
         http.authorizeHttpRequests().antMatchers(HttpMethod.POST, "/users").permitAll();

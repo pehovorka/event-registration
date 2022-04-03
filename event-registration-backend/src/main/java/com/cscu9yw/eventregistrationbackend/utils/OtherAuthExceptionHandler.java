@@ -10,7 +10,7 @@ import java.util.Map;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
-public class OtherAuthExceptionHandler {
+public class OtherAuthExceptionHandler extends Throwable {
     public OtherAuthExceptionHandler(String message, HttpServletResponse response) throws IOException {
         response.setStatus(UNAUTHORIZED.value());
         Map<String, String> error = new HashMap<>();

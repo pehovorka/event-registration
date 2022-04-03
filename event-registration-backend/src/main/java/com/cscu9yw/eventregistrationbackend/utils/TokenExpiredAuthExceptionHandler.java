@@ -1,5 +1,6 @@
 package com.cscu9yw.eventregistrationbackend.utils;
 
+import com.cscu9yw.eventregistrationbackend.model.AuthException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.servlet.http.HttpServletResponse;
@@ -10,15 +11,13 @@ import java.util.Map;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
-public class TokenExpiredAuthExceptionHandler {
+public class TokenExpiredAuthExceptionHandler extends Throwable {
 
     public TokenExpiredAuthExceptionHandler(String message, HttpServletResponse response) throws IOException {
         response.setStatus(UNAUTHORIZED.value());
-        Map<String, String> error = new HashMap<>();
-        error.put("cause", "TOKEN_EXPIRED");
-        error.put("message", message);
         response.setContentType(APPLICATION_JSON_VALUE);
-        new ObjectMapper().writeValue(response.getOutputStream(), error);
+        AuthException exception = new AuthException("TOKEN_EXPIRED", message);
+        new ObjectMapper().writeValue(response.getOutputStream(), exception);
     }
 
 }

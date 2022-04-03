@@ -2,6 +2,7 @@ package com.cscu9yw.eventregistrationbackend.filter;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.cscu9yw.eventregistrationbackend.model.JWTTokens;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -75,11 +76,8 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
                 .withIssuer(request.getRequestURL().toString()) // Admin login EP path
                 .sign(algorithm);
 
-        // Put tokens to HashMap in order to return them as JSON response.
-        Map<String, String> tokens = new HashMap<>();
-        tokens.put("accessToken", accessToken);
-        tokens.put("refreshToken", refreshToken);
+        // Return tokens in JSON response.
         response.setContentType(APPLICATION_JSON_VALUE);
-        new ObjectMapper().writeValue(response.getOutputStream(), tokens);
+        new ObjectMapper().writeValue(response.getOutputStream(), new JWTTokens(accessToken, refreshToken));
     }
 }
