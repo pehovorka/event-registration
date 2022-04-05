@@ -38,6 +38,7 @@ function EventForm({ initialState }: Props) {
       name: values.name,
       duration: values.duration,
       capacity: values.capacity,
+      location: values.location,
     };
     console.log(eventValues);
     if (initialState) {
@@ -74,6 +75,13 @@ function EventForm({ initialState }: Props) {
           rules={[{ required: true, message: "Please select a date!" }]}
         >
           <DatePicker showTime={true} format="DD/MM/YYYY HH:mm" />
+        </Form.Item>
+        <Form.Item
+          label="Location"
+          name="location"
+          rules={[{ required: true, message: "Please input a location!" }]}
+        >
+          <Input />
         </Form.Item>
         <Form.Item
           label="Duration (minutes)"

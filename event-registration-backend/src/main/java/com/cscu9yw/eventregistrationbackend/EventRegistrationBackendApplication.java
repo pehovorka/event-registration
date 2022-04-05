@@ -41,17 +41,17 @@ public class EventRegistrationBackendApplication {
     @Bean
     CommandLineRunner initDB(EventRepository eventRepository, AdminService adminService) {
         return (args) -> {
-            eventRepository.save(new Event("What's the deal with SvelteKit?", ZonedDateTime.parse("2022-04-14T10:00:00+00:00"), 120, 30));
-            eventRepository.save(new Event("Introduction to serverless", ZonedDateTime.parse("2022-04-11T12:45:00+00:00"), 90, 10));
-            eventRepository.save(new Event("Performance testing meetup", ZonedDateTime.parse("2022-04-29T16:30:00+00:00"), 300, 50));
-            eventRepository.save(new Event("Spring Boot for beginners 1", ZonedDateTime.parse("2022-04-13T10:00:00+00:00"), 240, 5));
-            eventRepository.save(new Event("Spring Boot for beginners 2", ZonedDateTime.parse("2022-04-20T10:00:00+00:00"), 240, 5));
-            eventRepository.save(new Event("What's new in Next.js 12", ZonedDateTime.parse("2022-04-12T10:00:00+00:00"), 120, 30));
+            eventRepository.save(new Event("What's the deal with SvelteKit?", "Cottrell 4X5", ZonedDateTime.parse("2022-04-14T10:00:00+00:00"), 120, 30));
+            eventRepository.save(new Event("Introduction to serverless", "Cottrell 4X1", ZonedDateTime.parse("2022-04-11T12:45:00+00:00"), 90, 10));
+            eventRepository.save(new Event("Performance testing meetup", "Studio", ZonedDateTime.parse("2022-04-29T16:30:00+00:00"), 300, 50));
+            eventRepository.save(new Event("Spring Boot for beginners 1", "Cottrell 4X1", ZonedDateTime.parse("2022-04-13T10:00:00+00:00"), 240, 5));
+            eventRepository.save(new Event("Spring Boot for beginners 2", "Cottrell 4X1", ZonedDateTime.parse("2022-04-20T10:00:00+00:00"), 240, 5));
+            eventRepository.save(new Event("What's new in Next.js 12", "Cottrell 4X5", ZonedDateTime.parse("2022-04-12T10:00:00+00:00"), 120, 30));
             adminService.saveAdmin(new Admin(environment.getProperty("admin.username"), environment.getProperty("admin.password")));
         };
     }
 
-    // API docs config
+    // OpenAPI docs config
     @Configuration
     @OpenAPIDefinition(info = @Info(title = "Event registration API", version = "v1"))
     @SecurityScheme(

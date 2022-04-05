@@ -38,6 +38,11 @@ function EventsList({ events, registrations, refetch, isAdmin }: Props) {
         }),
     },
     {
+      title: "Location",
+      dataIndex: "location",
+      key: "location",
+    },
+    {
       title: "Duration",
       dataIndex: "duration",
       key: "duration",

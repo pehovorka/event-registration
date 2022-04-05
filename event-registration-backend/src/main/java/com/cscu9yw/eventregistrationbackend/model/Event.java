@@ -16,6 +16,7 @@ public class Event {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
+    private String location;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private ZonedDateTime date;
     private int duration;
@@ -27,8 +28,9 @@ public class Event {
     @OrderBy("registeredAt DESC")
     private Set<EventRegistration> registrations = new HashSet<>();
 
-    public Event(String name, ZonedDateTime date, int duration, int capacity) {
+    public Event(String name, String location, ZonedDateTime date, int duration, int capacity) {
         this.name = name;
+        this.location = location;
         this.date = date;
         this.duration = duration;
         this.capacity = capacity;
@@ -83,6 +85,14 @@ public class Event {
 
     public int getRegistered() {
         return registrations.size();
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
     }
 
     @Override

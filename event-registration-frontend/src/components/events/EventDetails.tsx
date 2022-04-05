@@ -50,6 +50,7 @@ function EventDetails({ event }: Props) {
       }
     >
       <Descriptions size="small">
+        <Descriptions.Item label="Location">{event.location}</Descriptions.Item>
         <Descriptions.Item label="Duration">
           {event.duration} minutes
         </Descriptions.Item>
