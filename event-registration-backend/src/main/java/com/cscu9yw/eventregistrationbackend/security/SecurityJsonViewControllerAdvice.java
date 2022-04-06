@@ -12,10 +12,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.AbstractMappingJacksonResponseBodyAdvice;
 
 
-
 @RestControllerAdvice
 class SecurityJsonViewControllerAdvice extends AbstractMappingJacksonResponseBodyAdvice {
-// Use Admin view for authenticated users and User view for everybody else.
+    // Use Admin view for authenticated users and User view for everybody else.
     @Override
     protected void beforeBodyWriteInternal(
             MappingJacksonValue bodyContainer,

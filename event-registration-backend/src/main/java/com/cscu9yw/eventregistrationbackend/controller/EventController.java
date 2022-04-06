@@ -34,7 +34,9 @@ public class EventController {
 
     @GetMapping()
     @Operation(summary = "Get all events")
-    @ApiResponse(responseCode = "200", description = "successful operation")
+    @ApiResponse(responseCode = "200",
+            description = "successful operation (registrations array is " +
+                    "not available without a valid Authorization header)")
     public List<Event> getAllEvents() {
         return eventService.getAllEvents();
     }
@@ -75,7 +77,9 @@ public class EventController {
     @GetMapping("/{id}")
     @Operation(summary = "Get event by ID")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "successful operation"),
+            @ApiResponse(responseCode = "200",
+                    description = "successful operation (registrations array is " +
+                            "not available without a valid Authorization header)"),
             @ApiResponse(responseCode = "404", description = "event was was not found",
                     content = @Content(schema = @Schema(hidden = true)))
     })
